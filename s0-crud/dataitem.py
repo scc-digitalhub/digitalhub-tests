@@ -28,7 +28,9 @@ class TestDataitemCRUD:
 
         dicts = []
         for i in range(len(names)):
-            dicts.append({"name": names[i], "uuid": uuids[i], "path": paths[i], "kind": kind[i]})
+            dicts.append(
+                {"name": names[i], "uuid": uuids[i], "path": paths[i], "kind": kind[i]}
+            )
 
         return dicts
 
