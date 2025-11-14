@@ -19,7 +19,7 @@ def run() -> None:
     """
     project = dh.get_or_create_project(p_name)
 
-    train_fn = project.new_function(
+    _ = project.new_function(
         name="train-time-series-model",
         kind="python",
         python_version="PYTHON3_10",

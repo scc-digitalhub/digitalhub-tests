@@ -26,21 +26,21 @@ def run() -> None:
         kind="table",
         path=url,
     )
-    func = project.new_function(
+    _ = project.new_function(
         name="download-data",
         kind="python",
         python_version=py_ver,
         code_src=f_src,
         handler="downloader",
     )
-    process_func = project.new_function(
+    _ = project.new_function(
         name="process-spire",
         kind="python",
         python_version=py_ver,
         code_src=f_src,
         handler="process_spire",
     )
-    process_measures_func = project.new_function(
+    _ = project.new_function(
         name="process-measures",
         kind="python",
         python_version=py_ver,

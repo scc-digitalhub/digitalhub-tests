@@ -30,7 +30,7 @@ def run() -> None:
     WHERE   tab."DEPARTMENT_ID" = '50'
     """
 
-    func = project.new_function(
+    _ = project.new_function(
         name="transform-employees",
         kind="dbt",
         code=sql,

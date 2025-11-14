@@ -22,7 +22,7 @@ def run() -> None:
     """
     project = dh.get_or_create_project(p_name)
 
-    data_gen_fn = project.new_function(
+    _ = project.new_function(
         name="prepare-data",
         kind="python",
         python_version="PYTHON3_10",
