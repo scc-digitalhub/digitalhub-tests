@@ -22,3 +22,5 @@ RUN uv pip install "digitalhub[full]==${ver_sdk}" \
                    "digitalhub-runtime-dbt==${ver_dbt}" \
                    "digitalhub-runtime-flower==${ver_flower}" \
                    "digitalhub-runtime-hera==${ver_hera}"
+
+ENTRYPOINT ["/app/execute.sh"]

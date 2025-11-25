@@ -8,7 +8,7 @@ set -e
 if [ -z "$1" ]; then
     echo "Error: No test folder specified"
     echo "Usage: $0 <folder_name> [additional args...]"
-    echo "Available folders: s0-crud, s1-etl, s2-dbt, s3-scikit-learn, s4-mlflow, s5-custom-ml-model"
+    echo -e "Available folders:\n$(ls -d s*/ | tr -d '/')"
     exit 1
 fi
 
