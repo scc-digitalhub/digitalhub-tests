@@ -9,7 +9,7 @@ import traceback
 import digitalhub as dh
 from registry import TEST_CLASSES
 
-PROJECT_NAME = "digitalhub-crud-tests"
+PROJECT_NAME = "digitalhub-tests"
 
 
 def run_test_class(test_class, class_name, project):

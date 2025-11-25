@@ -11,12 +11,12 @@ if typing.TYPE_CHECKING:
         RunMlflowserveRun,
     )
 
-p_name = "tutorial-project"
+p_name = "digitalhub-tests"
 f_src = str(Path(__file__).parent / "src" / "functions.py")
 w_src = str(Path(__file__).parent / "src" / "pipeline.py")
 
 
-def run() -> None:
+def main() -> None:
     """
     Run a test pipeline.
     """
@@ -68,3 +68,7 @@ def run() -> None:
         model_name=model.name, json=json_payload
     )
     result.raise_for_status()
+
+
+if __name__ == "__main__":
+    main()

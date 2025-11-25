@@ -8,13 +8,13 @@ import digitalhub as dh
 if typing.TYPE_CHECKING:
     from digitalhub_runtime_python.entities.run._base.entity import RunPythonRun
 
-p_name = "tutorial-project"
+p_name = "digitalhub-tests"
 py_ver = "PYTHON3_10"
 f_src = str(Path(__file__).parent / "src" / "functions.py")
 w_src = str(Path(__file__).parent / "src" / "pipeline.py")
 
 
-def run() -> None:
+def main() -> None:
     """
     Run a test pipeline.
     """
@@ -73,3 +73,7 @@ def run() -> None:
     svc_url = f"http://{run_serve_model.status.service['url']}/?page=5&size=10"
     res: RunPythonRun = run_serve_model.invoke(url=svc_url)
     res.raise_for_status()
+
+
+if __name__ == "__main__":
+    main()

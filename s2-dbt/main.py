@@ -2,12 +2,12 @@ from pathlib import Path
 
 import digitalhub as dh
 
-p_name = "tutorial-project"
+p_name = "digitalhub-tests"
 f_src = str(Path(__file__).parent / "src" / "functions.py")
 w_src = str(Path(__file__).parent / "src" / "pipeline.py")
 
 
-def run() -> None:
+def main() -> None:
     """
     Run a test pipeline.
     """
@@ -49,3 +49,7 @@ def run() -> None:
         parameters={"employees": di.key},
         wait=True,
     )
+
+
+if __name__ == "__main__":
+    main()
