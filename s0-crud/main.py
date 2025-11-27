@@ -7,6 +7,7 @@ import sys
 import traceback
 
 import digitalhub as dh
+
 from registry import TEST_CLASSES
 
 PROJECT_NAME = "digitalhub-tests"

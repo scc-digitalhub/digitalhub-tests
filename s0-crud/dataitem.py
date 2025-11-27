@@ -58,15 +58,19 @@ class TestDataitemCRUD:
             assert isinstance(d, Dataitem)
             assert d.name == i["name"]
             assert d.kind == i["kind"]
-            dh.delete_dataitem(d.key)
+            dh.delete_dataitem(d.key, cascade=False)
 
             # Test module-level create + delete by name and id
             d = dh.new_dataitem(self.project.name, **i)
-            dh.delete_dataitem(d.name, project=self.project.name, entity_id=d.id)
-
+            dh.delete_dataitem(
+                d.name,
+                project=self.project.name,
+                entity_id=d.id,
+                cascade=False,
+            )
             # Test project-level create + delete
             d = self.project.new_dataitem(**i)
-            self.project.delete_dataitem(d.key)
+            self.project.delete_dataitem(d.key, cascade=False)
 
         assert dh.list_dataitems(self.project.name) == []
 
@@ -86,7 +90,10 @@ class TestDataitemCRUD:
 
         for obj in l_obj:
             dh.delete_dataitem(
-                obj.name, project=self.project.name, delete_all_versions=True
+                obj.name,
+                project=self.project.name,
+                delete_all_versions=True,
+                cascade=False,
             )
 
         assert len(dh.list_dataitems(self.project.name)) == 0
@@ -110,7 +117,7 @@ class TestDataitemCRUD:
 
         l_obj = dh.list_dataitems(self.project.name)
         for obj in l_obj:
-            dh.delete_dataitem(obj.key)
+            dh.delete_dataitem(obj.key, cascade=False)
 
         assert len(dh.list_dataitems(self.project.name)) == 0
 
@@ -138,7 +145,7 @@ class TestDataitemCRUD:
         assert di.metadata.description == desc
 
         # Cleanup
-        dh.delete_dataitem(di.key)
+        dh.delete_dataitem(di.key, cascade=False)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -171,6 +178,7 @@ class TestDataitemCRUD:
             name,
             project=self.project.name,
             delete_all_versions=True,
+            cascade=False,
         )
         assert len(dh.list_dataitems(self.project.name)) == 0
 
@@ -190,7 +198,7 @@ class TestDataitemCRUD:
         export_path = di.export()
         assert Path(export_path).exists()
 
-        dh.delete_dataitem(di.key)
+        dh.delete_dataitem(di.key, cascade=False)
         assert len(dh.list_dataitems(self.project.name)) == 0
 
         imported = dh.import_dataitem(file=export_path)
@@ -221,5 +229,5 @@ class TestDataitemCRUD:
         updated = self.project.update_dataitem(di)
         assert updated.metadata.description == description
 
-        self.project.delete_dataitem(di.key)
+        self.project.delete_dataitem(di.key, cascade=False)
         assert len(self.project.list_dataitems()) == 0

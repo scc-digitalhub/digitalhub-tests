@@ -53,15 +53,23 @@ class TestArtifactCRUD:
             assert isinstance(d, Artifact)
             assert d.name == i["name"]
             assert d.kind == i["kind"]
-            dh.delete_artifact(d.key)
+            dh.delete_artifact(d.key, cascade=False)
 
             # Test module-level create + delete by name and id
             d = dh.new_artifact(self.project.name, **i)
-            dh.delete_artifact(d.name, project=self.project.name, entity_id=d.id)
+            dh.delete_artifact(
+                d.name,
+                project=self.project.name,
+                entity_id=d.id,
+                cascade=False,
+            )
 
             # Test project-level create + delete
             d = self.project.new_artifact(**i)
-            self.project.delete_artifact(d.key)
+            self.project.delete_artifact(
+                d.key,
+                cascade=False,
+            )
 
         assert dh.list_artifacts(self.project.name) == []
 
@@ -80,7 +88,11 @@ class TestArtifactCRUD:
 
         # Delete all artifacts - test delete_all_versions
         for obj in l_obj:
-            dh.delete_artifact(obj.key, delete_all_versions=True)
+            dh.delete_artifact(
+                obj.key,
+                delete_all_versions=True,
+                cascade=False,
+            )
 
         assert len(dh.list_artifacts(self.project.name)) == 0
 
@@ -108,7 +120,7 @@ class TestArtifactCRUD:
         assert art.metadata.description == desc
 
         # Cleanup
-        dh.delete_artifact(art.key)
+        dh.delete_artifact(art.key, cascade=False)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -147,6 +159,7 @@ class TestArtifactCRUD:
             name,
             project=self.project.name,
             delete_all_versions=True,
+            cascade=False,
         )
         assert len(dh.list_artifacts(self.project.name)) == 0
 
@@ -168,7 +181,7 @@ class TestArtifactCRUD:
         assert Path(export_path).exists()
 
         # Delete original
-        dh.delete_artifact(art.key)
+        dh.delete_artifact(art.key, cascade=False)
         assert len(dh.list_artifacts(self.project.name)) == 0
 
         # Import back
@@ -206,7 +219,7 @@ class TestArtifactCRUD:
         assert updated.metadata.description == description
 
         # Delete via project
-        self.project.delete_artifact(art.key)
+        self.project.delete_artifact(art.key, cascade=False)
         assert len(self.project.list_artifacts()) == 0
 
     def test_get(self):
@@ -227,6 +240,6 @@ class TestArtifactCRUD:
         # delete listed objects
         l_obj = dh.list_artifacts(self.project.name)
         for obj in l_obj:
-            dh.delete_artifact(obj.key)
+            dh.delete_artifact(obj.key, cascade=False)
 
         assert len(dh.list_artifacts(self.project.name)) == 0
