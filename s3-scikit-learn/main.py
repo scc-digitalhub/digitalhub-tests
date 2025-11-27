@@ -12,8 +12,9 @@ if typing.TYPE_CHECKING:
     )
 
 p_name = "digitalhub-tests"
-f_src = str(Path(__file__).parent / "src" / "functions.py")
-w_src = str(Path(__file__).parent / "src" / "pipeline.py")
+BASE_DIR = (Path(__file__).parent).relative_to(Path.cwd())
+f_src = str(BASE_DIR / "src" / "functions.py")
+w_src = str(BASE_DIR / "src" / "pipeline.py")
 
 
 def main() -> None:
