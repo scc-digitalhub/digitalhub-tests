@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import typing
+import time
 from pathlib import Path
 
 import digitalhub as dh
@@ -57,9 +58,6 @@ def main() -> None:
         kind="sklearnserve",
         path=model.key,
     )
-
-    serve_run: RunSklearnserveRun = serve_func.run("serve", wait=True)
-
     data = np.random.rand(2, 30).tolist()
     json_payload = {
         "inputs": [
@@ -72,8 +70,18 @@ def main() -> None:
         ]
     }
 
+    serve_run: RunSklearnserveRun = serve_func.run("serve", wait=True)
+    time.sleep(45)  # wait for the service to be ready
     result = serve_run.invoke(json=json_payload)
-    result.raise_for_status()
+    try:
+        result.raise_for_status()
+        dh.delete_run(serve_run.key)
+        print("Request succeeded:", result.json())
+    except Exception as e:
+        print("Request failed:", e)
+        print("Response content:", result.text)
+        dh.delete_run(serve_run.key)
+        raise e
 
 
 if __name__ == "__main__":

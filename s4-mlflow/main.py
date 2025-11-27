@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -51,7 +52,7 @@ def main() -> None:
         model_name=model.name,
         path=model.key,
     )
-    serve_run = serve_func.run("serve", wait=True)
+    serve_run: RunMlflowserveRun = serve_func.run("serve", wait=True)
 
     iris = datasets.load_iris()
     data = iris.data[0:2].tolist()
@@ -65,10 +66,17 @@ def main() -> None:
             }
         ]
     }
-    result: RunMlflowserveRun = serve_run.invoke(
-        model_name=model.name, json=json_payload
-    )
-    result.raise_for_status()
+    time.sleep(45)  # wait for the service to be ready
+    result = serve_run.invoke(model_name=model.name, json=json_payload)
+    try:
+        result.raise_for_status()
+        dh.delete_run(serve_run.key)
+        print("Request succeeded:", result.json())
+    except Exception as e:
+        print("Request failed:", e)
+        print("Response content:", result.text)
+        dh.delete_run(serve_run.key)
+        raise e
 
 
 if __name__ == "__main__":

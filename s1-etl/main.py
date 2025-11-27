@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -48,7 +49,7 @@ def main() -> None:
         code_src=f_src,
         handler="process_measures",
     )
-    api_func = project.new_function(
+    serve_func = project.new_function(
         name="api",
         kind="python",
         python_version=py_ver,
@@ -69,11 +70,20 @@ def main() -> None:
         wait=True,
     )
 
-    api_func.refresh()
-    run_serve_model = api_func.list_runs()[0]
-    svc_url = f"http://{run_serve_model.status.service['url']}/?page=5&size=10"
-    res: RunPythonRun = run_serve_model.invoke(url=svc_url)
-    res.raise_for_status()
+    serve_func.refresh()
+    serve_run: RunPythonRun = serve_func.list_runs()[0]
+    svc_url = f"http://{serve_run.status.service['url']}/?page=5&size=10"
+    time.sleep(20)  # wait for the service to be ready
+    result = serve_run.invoke(url=svc_url)
+    try:
+        result.raise_for_status()
+        dh.delete_run(serve_run.key)
+        print("Request succeeded:", result.json())
+    except Exception as e:
+        print("Request failed:", e)
+        print("Response content:", result.text)
+        dh.delete_run(serve_run.key)
+        raise e
 
 
 if __name__ == "__main__":

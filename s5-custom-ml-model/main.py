@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -76,8 +77,17 @@ def main() -> None:
             {"value": 432.0, "date": -286675200000.0},
         ]
     }
+    time.sleep(45)  # wait for the service to be ready
     result = serve_run.invoke(json=inputs)
-    result.raise_for_status()
+    try:
+        result.raise_for_status()
+        dh.delete_run(serve_run.key)
+        print("Request succeeded:", result.json())
+    except Exception as e:
+        print("Request failed:", e)
+        print("Response content:", result.text)
+        dh.delete_run(serve_run.key)
+        raise e
 
 
 if __name__ == "__main__":
