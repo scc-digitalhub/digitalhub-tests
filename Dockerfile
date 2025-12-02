@@ -24,6 +24,6 @@ RUN useradd -r -m -u 8877 nonroot
 USER 8877
 
 WORKDIR /app
-COPY . /app
+COPY --chown=8877:8877 . /app
 
 ENTRYPOINT ["/app/execute.sh"]
