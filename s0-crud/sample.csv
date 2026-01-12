@@ -1,0 +1,21 @@
+id,name,age,city,salary,department
+1,Alice,28,New York,75000,Engineering
+2,Bob,34,Los Angeles,82000,Marketing
+3,Charlie,45,Chicago,95000,Finance
+4,Diana,29,Houston,68000,Engineering
+5,Eve,38,Phoenix,77000,Sales
+6,Frank,52,Philadelphia,110000,Finance
+7,Grace,31,San Antonio,72000,Marketing
+8,Henry,27,San Diego,65000,Engineering
+9,Ivy,41,Dallas,88000,Sales
+10,Jack,36,San Jose,92000,Engineering
+11,Kate,33,Austin,79000,Marketing
+12,Leo,48,Jacksonville,105000,Finance
+13,Mia,25,Fort Worth,58000,Engineering
+14,Noah,39,Columbus,84000,Sales
+15,Olivia,44,Charlotte,97000,Finance
+16,Paul,30,Indianapolis,71000,Marketing
+17,Quinn,35,Seattle,86000,Engineering
+18,Rose,42,Denver,91000,Sales
+19,Sam,26,Boston,63000,Engineering
+20,Tina,37,Nashville,80000,Marketing
