@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import time
 import typing
 from pathlib import Path
@@ -12,7 +13,7 @@ if typing.TYPE_CHECKING:
         RunMlflowserveRun,
     )
 
-p_name = "digitalhub-tests"
+p_name = os.environ.get("PROJECT_NAME", "digitalhub-tests")
 BASE_DIR = (Path(__file__).parent).relative_to(Path.cwd())
 f_src = str(BASE_DIR / "src" / "functions.py")
 w_src = str(BASE_DIR / "src" / "pipeline.py")

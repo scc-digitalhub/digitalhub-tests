@@ -1,8 +1,9 @@
+import os
 from pathlib import Path
 
 import digitalhub as dh
 
-p_name = "digitalhub-tests"
+p_name = os.environ.get("PROJECT_NAME", "digitalhub-tests")
 BASE_DIR = (Path(__file__).parent).relative_to(Path.cwd())
 f_src = str(BASE_DIR / "src" / "functions.py")
 w_src = str(BASE_DIR / "src" / "pipeline.py")
