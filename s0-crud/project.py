@@ -213,16 +213,16 @@ class TestProjectCRUD:
         p.new_function(**func)
 
         # Search all entities
-        all_entities = p.search_entity()
+        all_entities, _ = p.search_entity()
         assert len(all_entities) == 4
 
         # Search by entity type
-        artifacts = p.search_entity(entity_types=["artifact"])
+        artifacts, _ = p.search_entity(entity_types=["artifact"])
         assert len(artifacts) == 1
         assert artifacts[0].name == "test-artifact"
 
         # Search using module-level function
-        results = dh.search_entity(p.name, name="test-model")
+        results, _ = dh.search_entity(p.name, name="test-model")
         assert len(results) >= 1
 
         # Cleanup
