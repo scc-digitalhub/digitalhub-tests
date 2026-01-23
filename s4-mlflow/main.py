@@ -6,11 +6,10 @@ import typing
 from pathlib import Path
 
 import digitalhub as dh
-from sklearn import datasets
 
 if typing.TYPE_CHECKING:
-    from digitalhub_runtime_modelserve.entities.run.mlflowserve_run.entity import (
-        RunMlflowserveRun,
+    from digitalhub_runtime_modelserve.entities.run.mlflowserve_serve_run.entity import (
+        RunMlflowserveServeRun,
     )
 
 p_name = os.environ.get("PROJECT_NAME", "digitalhub-tests")
@@ -53,10 +52,20 @@ def main() -> None:
         model_name=model.name,
         path=model.key,
     )
-    serve_run: RunMlflowserveRun = serve_func.run("serve", wait=True)
+    serve_run: RunMlflowserveServeRun = serve_func.run("serve", wait=True)
 
-    iris = datasets.load_iris()
-    data = iris.data[0:2].tolist()
+    data = [
+        [5.1, 3.5, 1.4, 0.2],
+        [4.9, 3.0, 1.4, 0.2],
+        [4.7, 3.2, 1.3, 0.2],
+        [4.6, 3.1, 1.5, 0.2],
+        [5.0, 3.6, 1.4, 0.2],
+        [5.4, 3.9, 1.7, 0.4],
+        [4.6, 3.4, 1.4, 0.3],
+        [5.0, 3.4, 1.5, 0.2],
+        [4.4, 2.9, 1.4, 0.2],
+        [4.9, 3.1, 1.5, 0.1],
+    ]
     json_payload = {
         "inputs": [
             {
