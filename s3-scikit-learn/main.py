@@ -31,6 +31,7 @@ def main() -> None:
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="data_generator",
+        requirements=["numpy<2", "scikit-learn"],
     )
     train_fn = project.new_function(
         name="train-classifier",
@@ -38,7 +39,7 @@ def main() -> None:
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="train_model",
-        requirements=["numpy<2"],
+        requirements=["numpy<2", "scikit-learn"],
     )
     workflow = project.new_workflow(
         name="ml-pipeline",
