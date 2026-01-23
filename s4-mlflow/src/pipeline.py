@@ -17,7 +17,7 @@ def pipeline():
                     "model_name": "iris-classifier",
                 },
                 function="serve-mlflow-model",
-                inputs={"model": A.outputs["model"]},
+                inputs={"model": A.get_parameter("model")},
             )
             A >> B
     return w

@@ -25,7 +25,7 @@ def pipeline():
                     "path": "{{inputs.parameters.model}}",
                 },
                 function="serve-classifier",
-                inputs={"model": B.outputs["model"]},
+                inputs={"model": B.get_parameter("model")},
             )
             A >> B >> C
     return w
