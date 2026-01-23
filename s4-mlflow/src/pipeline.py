@@ -10,5 +10,14 @@ def pipeline():
                 function="train-mlflow-model",
                 outputs=["model"],
             )
-            A
+            B = step(
+                template={
+                    "action": "serve",
+                    "path": "{{inputs.parameters.model}}",
+                    "model_name": "iris-classifier",
+                },
+                function="serve-mlflow-model",
+                inputs={"model": A.outputs["model"]},
+            )
+            A >> B
     return w

@@ -9,6 +9,7 @@ import digitalhub as dh
 import numpy as np
 
 if typing.TYPE_CHECKING:
+    from digitalhub.entities.model.sklearn.entity import ModelSklearn
     from digitalhub_runtime_modelserve.entities.run.sklearnserve_run.entity import (
         RunSklearnserveRun,
     )
@@ -31,7 +32,7 @@ def main() -> None:
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="data_generator",
-        requirements=["numpy<2", "scikit-learn"],
+        requirements=["numpy<2", "scikit-learn<1.8"],
     )
     train_fn = project.new_function(
         name="train-classifier",
@@ -39,8 +40,14 @@ def main() -> None:
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="train_model",
-        requirements=["numpy<2", "scikit-learn"],
+        requirements=["numpy<2", "scikit-learn<1.8"],
     )
+
+    serve_func = project.new_function(
+        name="serve-classifier",
+        kind="sklearnserve",
+    )
+
     workflow = project.new_workflow(
         name="ml-pipeline",
         kind="hera",
@@ -51,15 +58,8 @@ def main() -> None:
     workflow.run("build", wait=True)
     workflow.run("pipeline", wait=True)
 
-    train_fn.refresh()
-    run_train_fn = train_fn.list_runs()[0]
+    time.sleep(45)  # wait for the service to be ready
 
-    model = run_train_fn.output("model")
-    serve_func = project.new_function(
-        name="serve-classifier",
-        kind="sklearnserve",
-        path=model.key,
-    )
     data = np.random.rand(2, 30).tolist()
     json_payload = {
         "inputs": [
@@ -72,9 +72,9 @@ def main() -> None:
         ]
     }
 
-    serve_run: RunSklearnserveRun = serve_func.run("serve", wait=True)
-    time.sleep(45)  # wait for the service to be ready
-    result = serve_run.invoke(json=json_payload)
+    model: ModelSklearn = train_fn.list_runs()[0].output("model")
+    serve_run: RunSklearnserveRun = serve_func.list_runs()[0]
+    result = serve_run.invoke(model_name=model.name, json=json_payload)
     try:
         result.raise_for_status()
         dh.delete_run(serve_run.key)

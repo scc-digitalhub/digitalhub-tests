@@ -8,6 +8,7 @@ from pathlib import Path
 import digitalhub as dh
 
 if typing.TYPE_CHECKING:
+    from digitalhub.entities.model.mlflow.entity import ModelMlflow
     from digitalhub_runtime_modelserve.entities.run.mlflowserve_serve_run.entity import (
         RunMlflowserveServeRun,
     )
@@ -33,6 +34,11 @@ def main() -> None:
         requirements=["numpy<2", "mlflow<3", "scikit-learn <= 1.6.1"],
     )
 
+    serve_func = project.new_function(
+        name="serve-mlflow-model",
+        kind="mlflowserve",
+    )
+
     workflow = project.new_workflow(
         name="mlflow-pipeline",
         kind="hera",
@@ -43,16 +49,7 @@ def main() -> None:
     workflow.run("build", wait=True)
     workflow.run("pipeline", wait=True)
 
-    train_fn.refresh()
-    train_model_run = train_fn.list_runs()[0]
-    model = train_model_run.output("model")
-    serve_func = project.new_function(
-        name="serve-mlflow-model",
-        kind="mlflowserve",
-        model_name=model.name,
-        path=model.key,
-    )
-    serve_run: RunMlflowserveServeRun = serve_func.run("serve", wait=True)
+    time.sleep(45)  # wait for the service to be ready
 
     data = [
         [5.1, 3.5, 1.4, 0.2],
@@ -76,7 +73,9 @@ def main() -> None:
             }
         ]
     }
-    time.sleep(45)  # wait for the service to be ready
+
+    model: ModelMlflow = train_fn.list_runs()[0].output("model")
+    serve_run: RunMlflowserveServeRun = serve_func.list_runs()[0]
     result = serve_run.invoke(model_name=model.name, json=json_payload)
     try:
         result.raise_for_status()

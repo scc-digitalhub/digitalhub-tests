@@ -1,12 +1,14 @@
 from digitalhub_runtime_hera.dsl import step
-from hera.workflows import DAG, Workflow
+from hera.workflows import Steps, Workflow
 
 
 def pipeline():
     with Workflow(entrypoint="dag") as w:
-        with DAG(name="dag"):
+        with Steps(name="dag"):
             A = step(
-                template={"action": "job"}, function="prepare-data", outputs=["dataset"]
+                template={"action": "job"},
+                function="prepare-data",
+                outputs=["dataset"],
             )
             B = step(
                 template={
@@ -15,6 +17,15 @@ def pipeline():
                 },
                 function="train-classifier",
                 inputs={"di": A.get_parameter("dataset")},
+                outputs=["model"],
             )
-            A >> B
+            C = step(
+                template={
+                    "action": "serve",
+                    "path": "{{inputs.parameters.model}}",
+                },
+                function="serve-classifier",
+                inputs={"model": B.outputs["model"]},
+            )
+            A >> B >> C
     return w
