@@ -22,12 +22,24 @@ def main() -> None:
     """
     project = dh.get_or_create_project(p_name)
 
+    build_func = project.new_function(
+        name="build-time-series-model",
+        kind="python",
+        python_version="PYTHON3_10",
+        code_src="placeholder",  # No build function needed
+        handler="placeholder",
+        requirements=["torch<2.6.0", "darts==0.30.0", "patsy"],
+    )
+    build_func.run("build", wait=True)
+    build_func.refresh()
+
     _ = project.new_function(
         name="train-time-series-model",
         kind="python",
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="train_model",
+        image=build_func.spec.image,
     )
     serve_func = project.new_function(
         name="serve-time-series-model",
@@ -36,6 +48,7 @@ def main() -> None:
         code_src=f_src,
         handler="serve_predictions",
         init_function="init_context",
+        image=build_func.spec.image,
     )
     workflow = project.new_workflow(
         name="time-series-pipeline",
