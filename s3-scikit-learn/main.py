@@ -9,7 +9,6 @@ import digitalhub as dh
 import numpy as np
 
 if typing.TYPE_CHECKING:
-    from digitalhub.entities.model.sklearn.entity import ModelSklearn
     from digitalhub_runtime_modelserve.entities.run.sklearnserve_run.entity import (
         RunSklearnserveRun,
     )
