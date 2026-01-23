@@ -26,7 +26,7 @@ def main() -> None:
         name="build-time-series-model",
         kind="python",
         python_version="PYTHON3_10",
-        code_src="placeholder",  # No build function needed
+        code="placeholder",  # No build function needed
         handler="placeholder",
         requirements=["torch<2.6.0", "darts==0.30.0", "patsy"],
     )

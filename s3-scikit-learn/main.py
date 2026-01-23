@@ -33,7 +33,7 @@ def main() -> None:
         handler="data_generator",
         requirements=["numpy<2", "scikit-learn<1.8"],
     )
-    train_fn = project.new_function(
+    _ = project.new_function(
         name="train-classifier",
         kind="python",
         python_version="PYTHON3_10",
