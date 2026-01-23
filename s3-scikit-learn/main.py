@@ -72,9 +72,8 @@ def main() -> None:
         ]
     }
 
-    model: ModelSklearn = train_fn.list_runs()[0].output("model")
     serve_run: RunSklearnserveRun = serve_func.list_runs()[0]
-    result = serve_run.invoke(model_name=model.name, json=json_payload)
+    result = serve_run.invoke(json=json_payload)
     try:
         result.raise_for_status()
         dh.delete_run(serve_run.key)
