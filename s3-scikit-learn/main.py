@@ -72,8 +72,8 @@ def main() -> None:
     }
 
     serve_run: RunSklearnserveRun = serve_func.list_runs()[0]
-    result = serve_run.invoke(json=json_payload)
     try:
+        result = serve_run.invoke(json=json_payload)
         result.raise_for_status()
         dh.delete_run(serve_run.key)
         print("Request succeeded:", result.json())

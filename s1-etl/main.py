@@ -75,8 +75,8 @@ def main() -> None:
     serve_run: RunPythonRun = serve_func.list_runs()[0]
     svc_url = f"http://{serve_run.status.service['url']}/?page=5&size=10"
     time.sleep(20)  # wait for the service to be ready
-    result = serve_run.invoke(url=svc_url)
     try:
+        result = serve_run.invoke(url=svc_url)
         result.raise_for_status()
         dh.delete_run(serve_run.key)
         print("Request succeeded:", result.json())

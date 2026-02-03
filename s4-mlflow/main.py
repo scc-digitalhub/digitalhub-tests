@@ -76,8 +76,8 @@ def main() -> None:
 
     model: ModelMlflow = train_fn.list_runs()[0].output("model")
     serve_run: RunMlflowserveServeRun = serve_func.list_runs()[0]
-    result = serve_run.invoke(model_name=model.name, json=json_payload)
     try:
+        result = serve_run.invoke(model_name=model.name, json=json_payload)
         result.raise_for_status()
         dh.delete_run(serve_run.key)
         print("Request succeeded:", result.json())
