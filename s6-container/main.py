@@ -57,7 +57,7 @@ def main() -> None:
         result = serve_run.invoke()
         result.raise_for_status()
         dh.delete_run(serve_run.key)
-        print("Request succeeded:", result.json())
+        print("Request succeeded:", result.text())
     except Exception as e:
         print("Request failed:", e)
         print("Response content:", result.text)
