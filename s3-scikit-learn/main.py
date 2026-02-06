@@ -45,6 +45,7 @@ def main() -> None:
     serve_func = project.new_function(
         name="serve-classifier",
         kind="sklearnserve",
+        path=f"store://{p_name}/models/breast-cancer-classifier",
     )
 
     workflow = project.new_workflow(

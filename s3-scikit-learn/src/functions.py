@@ -53,7 +53,9 @@ def train_model(project, di):
         "recall": sklearn.metrics.recall_score(y_test, y_predict),
     }
     model = project.log_model(
-        name="breast-cancer-classifier", kind="sklearn", source="./model/"
+        name="breast-cancer-classifier",
+        kind="sklearn",
+        source="./model/",
     )
     model.log_metrics(metrics)
     return model

@@ -37,6 +37,8 @@ def main() -> None:
     serve_func = project.new_function(
         name="serve-mlflow-model",
         kind="mlflowserve",
+        path=f"store://{p_name}/models/iris-classifier",
+        model_name="iris-classifier",
     )
 
     workflow = project.new_workflow(
