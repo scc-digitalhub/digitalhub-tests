@@ -5,19 +5,21 @@ Main test runner for CRUD tests.
 
 import os
 import sys
-import traceback
+from pathlib import Path
 
 import digitalhub as dh
 from registry import TEST_CLASSES
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from logging_utils import configure_logging
+
 PROJECT_NAME = os.environ.get("PROJECT_NAME", "digitalhub-tests")
+logger = configure_logging(__name__)
 
 
 def run_test_class(test_class, class_name, project):
     """Run all test methods in a test class."""
-    print(f"\n{'=' * 70}")
-    print(f"Running {class_name}")
-    print("=" * 70)
+    logger.info("Running %s", class_name)
 
     instance = test_class(project)
     test_methods = [m for m in dir(instance) if m.startswith("test_")]
@@ -27,26 +29,20 @@ def run_test_class(test_class, class_name, project):
 
     for method_name in test_methods:
         try:
-            print(f"\n  ▶ {method_name}...", end=" ")
+            logger.info("  ▶ %s...", method_name)
             getattr(instance, method_name)()
-            print("✓ PASSED")
             passed += 1
         except Exception as e:
-            raise e
-            print("✗ FAILED")
-            print(f"    Error: {e}")
-            traceback.print_exc(limit=3)
+            logger.exception("✗ FAILED: %s", e)
             failed += 1
 
-    print(f"\n  Results: {passed} passed, {failed} failed")
+    logger.info("  Results: %s passed, %s failed", passed, failed)
     return passed, failed
 
 
 def main():
     """Run all CRUD tests."""
-    print("\n" + "=" * 70)
-    print("DIGITALHUB SDK - CRUD TESTS")
-    print("=" * 70)
+    logger.info("DIGITALHUB SDK - CRUD TESTS")
 
     dh.delete_project(PROJECT_NAME)
     p = dh.get_or_create_project(PROJECT_NAME)
@@ -60,18 +56,15 @@ def main():
         total_failed += failed
 
     # Final summary
-    print("\n" + "=" * 70)
-    print("FINAL SUMMARY")
-    print("=" * 70)
-    print(f"Total tests: {total_passed + total_failed}")
-    print(f"Passed: {total_passed}")
-    print(f"Failed: {total_failed}")
-    print("=" * 70)
+    logger.info("FINAL SUMMARY")
+    logger.info("Total tests: %s", total_passed + total_failed)
+    logger.info("Passed: %s", total_passed)
+    logger.info("Failed: %s", total_failed)
 
     if total_failed > 0:
         sys.exit(1)
     else:
-        print("\n✓ All tests passed!")
+        logger.info("✓ All tests passed!")
         sys.exit(0)
 
 

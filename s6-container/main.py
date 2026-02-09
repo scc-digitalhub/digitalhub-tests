@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import typing
 from pathlib import Path
@@ -8,9 +9,13 @@ import digitalhub as dh
 if typing.TYPE_CHECKING:
     from digitalhub_runtime_container.entities.run._base.entity import RunContainerRun
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from logging_utils import configure_logging
+
 p_name = os.environ.get("PROJECT_NAME", "digitalhub-tests")
 BASE_DIR = (Path(__file__).parent).relative_to(Path.cwd())
 w_src = str(BASE_DIR / "src" / "pipeline.py")
+logger = configure_logging(__name__)
 
 
 def main() -> None:
@@ -53,14 +58,16 @@ def main() -> None:
     serve_func.refresh()
     serve_run: RunContainerRun = serve_func.list_runs()[0]
     time.sleep(20)  # wait for the service to be ready
+    result = None
     try:
         result = serve_run.invoke()
         result.raise_for_status()
         dh.delete_run(serve_run.key)
-        print("Request succeeded:", result.text)
+        logger.info("Request succeeded: %s", result.text)
     except Exception as e:
-        print("Request failed:", e)
-        print("Response content:", result.text)
+        logger.exception("Request failed: %s", e)
+        if result is not None:
+            logger.info("Response content: %s", result.text)
         dh.delete_run(serve_run.key)
         raise e
 

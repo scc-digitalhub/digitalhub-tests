@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import time
 import typing
 from pathlib import Path
@@ -13,10 +14,14 @@ if typing.TYPE_CHECKING:
         RunSklearnserveRun,
     )
 
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+from logging_utils import configure_logging
+
 p_name = os.environ.get("PROJECT_NAME", "digitalhub-tests")
 BASE_DIR = (Path(__file__).parent).relative_to(Path.cwd())
 f_src = str(BASE_DIR / "src" / "functions.py")
 w_src = str(BASE_DIR / "src" / "pipeline.py")
+logger = configure_logging(__name__)
 
 
 def main() -> None:
@@ -73,14 +78,16 @@ def main() -> None:
     }
 
     serve_run: RunSklearnserveRun = serve_func.list_runs()[0]
+    result = None
     try:
         result = serve_run.invoke(json=json_payload)
         result.raise_for_status()
         dh.delete_run(serve_run.key)
-        print("Request succeeded:", result.json())
+        logger.info("Request succeeded: %s", result.json())
     except Exception as e:
-        print("Request failed:", e)
-        print("Response content:", result.text)
+        logger.exception("Request failed: %s", e)
+        if result is not None:
+            logger.info("Response content: %s", result.text)
         dh.delete_run(serve_run.key)
         raise e
 
