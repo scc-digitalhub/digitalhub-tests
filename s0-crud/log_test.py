@@ -21,9 +21,12 @@ if typing.TYPE_CHECKING:
 class TestLogCRUD:
     def __init__(self, project: Project):
         self.project = project
-        self.path = str(Path(__file__).parent / "sample.csv")
+        self.path = str(Path(__file__).parent / "data" / "sample.csv")
         self.dfpl = pl.read_csv(self.path)
         self.dfpd = pd.read_csv(self.path)
+        self.cr_path = str(
+            Path(__file__).parent / "data" / "croissant" / "metadata.json"
+        )
 
     def test_log_methods(self):
         """Test all log methods for different entities."""
@@ -56,6 +59,7 @@ class TestLogCRUD:
         dh.log_table(self.project.name, name, data=self.dfpd)
         dh.log_dataitem(self.project.name, name, "dataitem", source=self.path)
         dh.log_dataitem(self.project.name, name, "table", data=self.dfpl)
+        dh.log_croissant(self.project.name, name, source=self.cr_path)
         dh.log_generic_dataitem(self.project.name, name, source=self.path)
         self.project.log_table(name, source=self.path)
         self.project.log_table(name, data=self.dfpl)
@@ -63,7 +67,8 @@ class TestLogCRUD:
         self.project.log_dataitem(name, "dataitem", source=self.path)
         self.project.log_dataitem(name, "table", data=self.dfpl)
         self.project.log_generic_dataitem(name, source=self.path)
-        assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 12
+        self.project.log_croissant(name, source=self.cr_path)
+        assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 14
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
 
         # Log models
