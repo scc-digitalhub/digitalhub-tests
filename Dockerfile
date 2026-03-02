@@ -22,7 +22,7 @@ RUN uv pip install "digitalhub[full]==${ver_sdk}" \
                    "digitalhub-runtime-flower==${ver_flower}" \
                    "digitalhub-runtime-hera==${ver_hera}" \
                    "digitalhub-runtime-guardrail==${ver_guardrail}" \
-                   "digitalhub-runtime-openinference==${ver_openinference}}" \
+                   "digitalhub-runtime-openinference==${ver_openinference}}" 
 
 RUN useradd -r -m -u 8877 nonroot
 USER 8877
