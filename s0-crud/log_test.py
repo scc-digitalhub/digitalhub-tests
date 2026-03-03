@@ -46,7 +46,11 @@ class TestLogCRUD:
             pass
 
         # Log artifacts
-        common_artifact_kwargs = {"source": self.path, "description": "Test artifact", "labels": ["test", "artifact"]}
+        common_artifact_kwargs = {
+            "source": self.path,
+            "description": "Test artifact",
+            "labels": ["test", "artifact"],
+        }
         dh.log_artifact(self.project.name, name, "artifact", **common_artifact_kwargs)
         dh.log_generic_artifact(self.project.name, name, **common_artifact_kwargs)
         self.project.log_artifact(name, "artifact", **common_artifact_kwargs)
@@ -55,26 +59,53 @@ class TestLogCRUD:
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
 
         # Log dataitems
-        common_dataitem_kwargs = {"description": "Test dataitem", "labels": ["test", "dataitem"]}
-        dh.log_table(self.project.name, name, source=self.path, **common_dataitem_kwargs)
+        common_dataitem_kwargs = {
+            "description": "Test dataitem",
+            "labels": ["test", "dataitem"],
+        }
+        dh.log_table(
+            self.project.name, name, source=self.path, **common_dataitem_kwargs
+        )
         dh.log_table(self.project.name, name, data=self.dfpl, **common_dataitem_kwargs)
         dh.log_table(self.project.name, name, data=self.dfpd, **common_dataitem_kwargs)
-        dh.log_dataitem(self.project.name, name, "dataitem", source=self.path, **common_dataitem_kwargs)
-        dh.log_dataitem(self.project.name, name, "table", data=self.dfpl, **common_dataitem_kwargs)
-        dh.log_croissant(self.project.name, name, source=self.cr_path, **common_dataitem_kwargs)
-        dh.log_generic_dataitem(self.project.name, name, source=self.path, **common_dataitem_kwargs)
+        dh.log_dataitem(
+            self.project.name,
+            name,
+            "dataitem",
+            source=self.path,
+            **common_dataitem_kwargs,
+        )
+        dh.log_dataitem(
+            self.project.name, name, "table", data=self.dfpl, **common_dataitem_kwargs
+        )
+        dh.log_croissant(
+            self.project.name, name, source=self.cr_path, **common_dataitem_kwargs
+        )
+        dh.log_generic_dataitem(
+            self.project.name, name, source=self.path, **common_dataitem_kwargs
+        )
         self.project.log_table(name, source=self.path, **common_dataitem_kwargs)
         self.project.log_table(name, data=self.dfpl, **common_dataitem_kwargs)
         self.project.log_table(name, data=self.dfpd, **common_dataitem_kwargs)
-        self.project.log_dataitem(name, "dataitem", source=self.path, **common_dataitem_kwargs)
-        self.project.log_dataitem(name, "table", data=self.dfpl, **common_dataitem_kwargs)
-        self.project.log_generic_dataitem(name, source=self.path, **common_dataitem_kwargs)
+        self.project.log_dataitem(
+            name, "dataitem", source=self.path, **common_dataitem_kwargs
+        )
+        self.project.log_dataitem(
+            name, "table", data=self.dfpl, **common_dataitem_kwargs
+        )
+        self.project.log_generic_dataitem(
+            name, source=self.path, **common_dataitem_kwargs
+        )
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 14
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
 
         # Log models
-        common_model_kwargs = {"source": self.path, "description": "Test model", "labels": ["test", "model"]}
+        common_model_kwargs = {
+            "source": self.path,
+            "description": "Test model",
+            "labels": ["test", "model"],
+        }
         dh.log_model(self.project.name, name, "model", **common_model_kwargs)
         dh.log_model(self.project.name, name, "huggingface", **common_model_kwargs)
         dh.log_model(self.project.name, name, "sklearn", **common_model_kwargs)
