@@ -8,7 +8,7 @@ ARG ver_dbt=0.15.0b5
 ARG ver_hera=0.15.0b5
 ARG ver_flower=0.15.0b4
 ARG ver_guardrail=0.15.0b2
-ARG ver_openinference=0.15.0b2
+ARG ver_openinference=0.1.1b1
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
