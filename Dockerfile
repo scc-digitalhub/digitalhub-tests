@@ -7,8 +7,6 @@ ARG ver_modelserve=0.15.0b10
 ARG ver_dbt=0.15.0b6
 ARG ver_hera=0.15.0b6
 ARG ver_flower=0.15.0b4
-ARG ver_guardrail=0.15.0b2
-ARG ver_openinference=0.1.1b1
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
@@ -20,9 +18,7 @@ RUN uv pip install "digitalhub[full]==${ver_sdk}" \
                    "digitalhub-runtime-modelserve==${ver_modelserve}" \
                    "digitalhub-runtime-dbt==${ver_dbt}" \
                    "digitalhub-runtime-flower==${ver_flower}" \
-                   "digitalhub-runtime-hera==${ver_hera}" \
-                   "digitalhub-runtime-guardrail==${ver_guardrail}" \
-                   "digitalhub-runtime-openinference==${ver_openinference}" 
+                   "digitalhub-runtime-hera==${ver_hera}"
 
 RUN useradd -r -m -u 8877 nonroot
 USER 8877
