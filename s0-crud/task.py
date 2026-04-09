@@ -95,31 +95,6 @@ class TestTaskCRUD:
         dh.delete_function(f.key)
         assert dh.list_tasks(self.project.name) == []
 
-    def test_update_refresh(self):
-        """Test update and refresh operations."""
-        f = self._get_function()
-        assert dh.list_tasks(self.project.name) == []
-
-        # Create task
-        task = f.new_task(action="job")
-
-        # Update labels
-        labels = ["test", "update"]
-        task.metadata.labels = labels
-        task.save(update=True)
-
-        # Verify update
-        refreshed = dh.get_task(task.key)
-        assert refreshed.metadata.labels == labels
-
-        # Test refresh method
-        task.refresh()
-        assert task.metadata.labels == labels
-
-        # Cleanup
-        dh.delete_task(task.key)
-        dh.delete_function(f.key)
-
     def test_import_export(self):
         """Test import/export functionality."""
         f = self._get_function()

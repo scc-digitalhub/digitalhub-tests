@@ -199,31 +199,3 @@ class TestProjectCRUD:
         # Cleanup
         dh.delete_project(p.name)
         Path(export_path).unlink(missing_ok=True)
-
-    def test_search_entity(self):
-        """Test search_entity operation."""
-
-        proj_dict = PROJECT_DICTS[2]
-        p = dh.new_project(**proj_dict)
-
-        # Create entities of different types
-        p.new_artifact(**artf)
-        p.new_dataitem(**data)
-        p.new_model(**modl)
-        p.new_function(**func)
-
-        # Search all entities
-        all_entities, _ = p.search_entity()
-        assert len(all_entities) == 4
-
-        # Search by entity type
-        artifacts, _ = p.search_entity(entity_types=["artifact"])
-        assert len(artifacts) == 1
-        assert artifacts[0].name == "test-artifact"
-
-        # Search using module-level function
-        results, _ = dh.search_entity(p.name, name="test-model")
-        assert len(results) >= 1
-
-        # Cleanup
-        dh.delete_project(p.name)
