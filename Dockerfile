@@ -1,7 +1,7 @@
 FROM python:3.12
 
 ARG ver_sdk=0.15.0b17
-ARG ver_python=0.15.0b16
+ARG ver_python=0.15.0b17
 ARG ver_container=0.15.0b6
 ARG ver_modelserve=0.15.0b11
 ARG ver_dbt=0.15.0b7
