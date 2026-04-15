@@ -6,7 +6,7 @@ ARG ver_container=0.15.0b7
 ARG ver_modelserve=0.15.0b12
 ARG ver_dbt=0.15.0b7
 ARG ver_hera=0.15.0b6
-ARG ver_flower=0.15.0b5
+ARG ver_flower=0.15.0b6
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
