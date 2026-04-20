@@ -26,6 +26,7 @@ def main() -> None:
     Run a test pipeline.
     """
     project = dh.get_or_create_project(p_name)
+    project.share("*")
 
     build_func = project.new_function(
         name="build-time-series-model",

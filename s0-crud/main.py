@@ -46,6 +46,7 @@ def main():
 
     dh.delete_project(PROJECT_NAME)
     p = dh.get_or_create_project(PROJECT_NAME)
+    p.share("*")
 
     total_passed = 0
     total_failed = 0

@@ -14,6 +14,7 @@ def main() -> None:
     Run a test pipeline.
     """
     project = dh.get_or_create_project(p_name)
+    project.share("*")
 
     url = "https://gist.githubusercontent.com/kevin336/acbb2271e66c10a5b73aacf82ca82784/raw/e38afe62e088394d61ed30884dd50a6826eee0a8/employees.csv"
     di = project.new_dataitem(

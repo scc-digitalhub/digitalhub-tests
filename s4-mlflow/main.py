@@ -29,6 +29,7 @@ def main() -> None:
     Run a test pipeline.
     """
     project = dh.get_or_create_project(p_name)
+    project.share("*")
 
     train_fn = project.new_function(
         name="train-mlflow-model",

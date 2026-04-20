@@ -27,6 +27,7 @@ def main() -> None:
     Run a test pipeline.
     """
     project = dh.get_or_create_project(p_name)
+    project.share("*")
 
     url = "https://opendata.comune.bologna.it/api/explore/v2.1/catalog/datasets/rilevazione-flusso-veicoli-tramite-spire-anno-2023/exports/csv?limit=10000&lang=it&timezone=Europe%2FRome&use_labels=true&delimiter=%3B"
     di = project.new_dataitem(

@@ -80,12 +80,14 @@ class TestProjectCRUD:
         for i in PROJECT_DICTS:
             # Test module-level create + delete
             p = dh.new_project(**i)
+            p.share("*")
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
 
             # Test get_or_create
             p = dh.get_or_create_project(**i)
+            p.share("*")
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
@@ -97,6 +99,7 @@ class TestProjectCRUD:
         projects = []
         for i in PROJECT_DICTS:
             p = dh.new_project(**i)
+            p.share("*")
             projects.append(p)
 
         # Test get
@@ -114,6 +117,7 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[0]
         p = dh.new_project(**proj_dict)
+        p.share("*")
 
         # Update description via entity
         p.metadata.description = "Updated description"
@@ -145,6 +149,7 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[0]
         p = dh.new_project(**proj_dict)
+        p.share("*")
 
         # Create some entities in the project
         p.new_artifact(**artf)
@@ -180,6 +185,7 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[1]
         p = dh.new_project(**proj_dict)
+        p.share("*")
 
         # Export to file
         export_path = p.export()
