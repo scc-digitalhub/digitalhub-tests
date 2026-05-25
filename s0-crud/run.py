@@ -158,6 +158,7 @@ class TestRunCRUD:
         assert Path(export_path).exists()
 
         dh.delete_run(run.key)
+        time.sleep(2)
         assert len(dh.list_runs(self.project.name)) == 0
 
         imported = dh.import_run(file=export_path)
