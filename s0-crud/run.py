@@ -21,7 +21,6 @@ if typing.TYPE_CHECKING:
 
 RUN_DICTS = [
     {
-        "local_execution": True,
         "run_kind": "python+job:run",
     }
 ]
