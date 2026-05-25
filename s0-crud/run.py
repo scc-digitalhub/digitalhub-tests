@@ -7,6 +7,7 @@ Unit tests for the entity Run
 
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -63,6 +64,7 @@ class TestRunCRUD:
             f.delete_task(action=action)
 
         dh.delete_function(f.key)
+        time.sleep(2)
         assert dh.list_runs(self.project.name) == []
 
     def test_list(self):
@@ -87,6 +89,7 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
+        time.sleep(2)
         assert len(dh.list_runs(self.project.name)) == 0
 
     def test_get(self):
@@ -114,6 +117,7 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
+        time.sleep(2)
         assert dh.list_runs(self.project.name) == []
 
     def test_update_refresh(self):
