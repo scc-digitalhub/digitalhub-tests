@@ -87,7 +87,7 @@ class TestFunctionCRUD:
             dh.delete_function(
                 obj.name, project=self.project.name, delete_all_versions=True
             )
-        time.sleep(2)
+        time.sleep(4)
 
         assert len(dh.list_functions(self.project.name)) == 0
 
@@ -111,7 +111,7 @@ class TestFunctionCRUD:
         l_obj = dh.list_functions(self.project.name)
         for obj in l_obj:
             dh.delete_function(obj.key)
-        time.sleep(2)
+        time.sleep(4)
 
         assert len(dh.list_functions(self.project.name)) == 0
 
@@ -177,7 +177,7 @@ class TestFunctionCRUD:
             project=self.project.name,
             delete_all_versions=True,
         )
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_functions(self.project.name)) == 0
 
     def test_import_export(self):

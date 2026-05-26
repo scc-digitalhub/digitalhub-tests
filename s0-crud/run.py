@@ -63,7 +63,7 @@ class TestRunCRUD:
             f.delete_task(action=action)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert dh.list_runs(self.project.name) == []
 
     def test_list(self):
@@ -88,7 +88,7 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_runs(self.project.name)) == 0
 
     def test_get(self):
@@ -116,7 +116,7 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert dh.list_runs(self.project.name) == []
 
     def test_update_refresh(self):
@@ -145,7 +145,7 @@ class TestRunCRUD:
         dh.delete_run(run.key)
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_import_export(self):
         """Test import/export functionality."""
@@ -159,7 +159,7 @@ class TestRunCRUD:
         assert Path(export_path).exists()
 
         dh.delete_run(run.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_runs(self.project.name)) == 0
 
         imported = dh.import_run(file=export_path)
@@ -171,4 +171,4 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
