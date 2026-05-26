@@ -145,6 +145,7 @@ class TestRunCRUD:
         dh.delete_run(run.key)
         f.delete_task(action="job")
         dh.delete_function(f.key)
+        time.sleep(2)
 
     def test_import_export(self):
         """Test import/export functionality."""
@@ -170,3 +171,4 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
+        time.sleep(2)

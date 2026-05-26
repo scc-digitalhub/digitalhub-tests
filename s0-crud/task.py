@@ -7,6 +7,7 @@ Unit tests for the entity Task
 
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -47,6 +48,7 @@ class TestTaskCRUD:
             dh.delete_task(t.key)
 
         dh.delete_function(f.key)
+        time.sleep(2)
         assert dh.list_tasks(self.project.name) == []
 
     def test_list(self):
@@ -68,6 +70,7 @@ class TestTaskCRUD:
             dh.delete_task(obj.key)
 
         dh.delete_function(f.key)
+        time.sleep(2)
         assert dh.list_tasks(self.project.name) == []
 
     def test_get(self):
@@ -93,6 +96,7 @@ class TestTaskCRUD:
             dh.delete_task(obj.key)
 
         dh.delete_function(f.key)
+        time.sleep(2)
         assert dh.list_tasks(self.project.name) == []
 
     def test_import_export(self):
@@ -121,3 +125,4 @@ class TestTaskCRUD:
         Path(export_path).unlink()
 
         dh.delete_function(f.key)
+        time.sleep(2)
