@@ -101,6 +101,8 @@ class TestWorkflowCRUD:
             assert o1.id == o3.id
 
         l_obj = dh.list_workflows(self.project.name)
+
+        time.sleep(2)
         for obj in l_obj:
             dh.delete_workflow(obj.key)
         time.sleep(2)

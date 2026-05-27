@@ -109,6 +109,8 @@ class TestFunctionCRUD:
             assert o1.id == o3.id
 
         l_obj = dh.list_functions(self.project.name)
+
+        time.sleep(2)
         for obj in l_obj:
             dh.delete_function(obj.key)
         time.sleep(2)

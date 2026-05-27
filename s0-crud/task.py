@@ -41,10 +41,12 @@ class TestTaskCRUD:
             assert isinstance(t, Task)
             assert t.kind == f"container+{action}"
             assert t.spec.function == f._get_executable_string()
+            time.sleep(2)
             dh.delete_task(t.key)
 
             # Test module-level create + delete by name and id
             t = f.new_task(action=action)
+            time.sleep(2)
             dh.delete_task(t.key)
 
         dh.delete_function(f.key)
