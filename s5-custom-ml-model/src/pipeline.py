@@ -11,7 +11,7 @@ def pipeline():
             )
             Build2 = step(
                 template={"action": "build"},
-                function="train-time-series-model",
+                function="serve-time-series-model",
             )
             A = step(
                 template={"action": "job"},
