@@ -88,6 +88,7 @@ class TestRunCRUD:
         time.sleep(2)
         for obj in l_obj:
             dh.delete_run(obj.key)
+        time.sleep(2)
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
@@ -120,6 +121,8 @@ class TestRunCRUD:
             dh.delete_run(obj.key)
 
         f.delete_task(action="job")
+        time.sleep(2)
+
         dh.delete_function(f.key)
         time.sleep(2)
         assert dh.list_runs(self.project.name) == []
