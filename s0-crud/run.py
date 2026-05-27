@@ -52,18 +52,20 @@ class TestRunCRUD:
 
             # Test module-level create + delete by key
             r = task.run(**run_dict)
+            time.sleep(2)
             assert isinstance(r, Run)
             assert r.kind == f"python+{action}:run"
             dh.delete_run(r.key)
 
             # Test module-level create + delete by id
             r = task.run(**RUN_DICTS[0])
+            time.sleep(2)
             dh.delete_run(r.id, project=self.project.name, entity_id=r.id)
 
             f.delete_task(action=action)
 
         dh.delete_function(f.key)
-        time.sleep(4)
+        time.sleep(2)
         assert dh.list_runs(self.project.name) == []
 
     def test_list(self):
@@ -83,12 +85,13 @@ class TestRunCRUD:
         for i in l_obj:
             assert isinstance(i, Run)
 
+        time.sleep(2)
         for obj in l_obj:
             dh.delete_run(obj.key)
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(4)
+        time.sleep(2)
         assert len(dh.list_runs(self.project.name)) == 0
 
     def test_get(self):
@@ -111,12 +114,14 @@ class TestRunCRUD:
             assert o1.id == o3.id
 
         l_obj = dh.list_runs(self.project.name)
+
+        time.sleep(2)
         for obj in l_obj:
             dh.delete_run(obj.key)
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(4)
+        time.sleep(2)
         assert dh.list_runs(self.project.name) == []
 
     def test_update_refresh(self):
@@ -127,6 +132,7 @@ class TestRunCRUD:
 
         # Create run
         run = task.run(**RUN_DICTS[0])
+        time.sleep(2)
 
         # Update labels
         labels = ["test", "update"]
@@ -145,7 +151,7 @@ class TestRunCRUD:
         dh.delete_run(run.key)
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(4)
+        time.sleep(2)
 
     def test_import_export(self):
         """Test import/export functionality."""
@@ -154,12 +160,13 @@ class TestRunCRUD:
 
         # Create run
         run = task.run(**RUN_DICTS[0])
+        time.sleep(2)
 
         export_path = run.export()
         assert Path(export_path).exists()
 
         dh.delete_run(run.key)
-        time.sleep(4)
+        time.sleep(2)
         assert len(dh.list_runs(self.project.name)) == 0
 
         imported = dh.import_run(file=export_path)
@@ -171,4 +178,4 @@ class TestRunCRUD:
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
-        time.sleep(4)
+        time.sleep(2)

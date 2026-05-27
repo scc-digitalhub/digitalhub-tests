@@ -79,7 +79,7 @@ class TestWorkflowCRUD:
             dh.delete_workflow(
                 obj.name, project=self.project.name, delete_all_versions=True
             )
-        time.sleep(4)
+        time.sleep(2)
 
         assert len(dh.list_workflows(self.project.name)) == 0
 
@@ -103,7 +103,7 @@ class TestWorkflowCRUD:
         l_obj = dh.list_workflows(self.project.name)
         for obj in l_obj:
             dh.delete_workflow(obj.key)
-        time.sleep(4)
+        time.sleep(2)
 
         assert len(dh.list_workflows(self.project.name)) == 0
 
@@ -167,7 +167,7 @@ class TestWorkflowCRUD:
             project=self.project.name,
             delete_all_versions=True,
         )
-        time.sleep(4)
+        time.sleep(2)
         assert len(dh.list_workflows(self.project.name)) == 0
 
     def test_import_export(self):
