@@ -33,7 +33,7 @@ def pipeline():
                     "path": "{{inputs.parameters.model}}",
                 },
                 function="serve-classifier",
-                inputs={"path": B1.get_parameter("model")},
+                inputs={"model": B1.get_parameter("model")},
             )
             [A0, B0] >> A1 >> B1 >> C
     return w
