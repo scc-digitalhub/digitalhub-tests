@@ -24,13 +24,8 @@ def pipeline():
                     "inputs": {"di": "{{inputs.parameters.di}}"},
                 },
                 function="train-classifier",
-                inputs={"di": A1.get_parameter("dataset")}
+                inputs={"di": A1.get_parameter("dataset")},
             )
-            C = step(
-                template={
-                    "action": "serve"
-                },
-                function="serve-classifier"
-            )
+            C = step(template={"action": "serve"}, function="serve-classifier")
             [A0, B0] >> A1 >> B1 >> C
     return w
