@@ -1,6 +1,6 @@
 FROM python:3.12
 
-ARG ver_sdk=0.15.3
+ARG ver_sdk=0.15.4
 ARG ver_python=0.16.0b0
 ARG ver_container=0.15.2
 ARG ver_modelserve=0.15.0
