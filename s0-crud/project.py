@@ -7,6 +7,7 @@ Unit tests for the entity Project
 
 from __future__ import annotations
 
+import time
 from pathlib import Path
 
 import digitalhub as dh
@@ -63,14 +64,17 @@ class TestProjectCRUD:
         # since it creates/tests its own projects
         try:
             dh.delete_project("test-project-1")
+            time.sleep(2)
         except Exception:
             pass
         try:
             dh.delete_project("test-project-2")
+            time.sleep(2)
         except Exception:
             pass
         try:
             dh.delete_project("test-project-3")
+            time.sleep(2)
         except Exception:
             pass
 
@@ -84,6 +88,7 @@ class TestProjectCRUD:
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
+            time.sleep(2)
 
             # Test get_or_create
             p = dh.get_or_create_project(**i)
@@ -91,6 +96,7 @@ class TestProjectCRUD:
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
+            time.sleep(2)
 
     def test_get_list(self):
         """Test get and list operations."""
@@ -111,6 +117,7 @@ class TestProjectCRUD:
         # Cleanup
         for proj in projects:
             dh.delete_project(proj.name)
+            time.sleep(2)
 
     def test_update_refresh(self):
         """Test update and refresh operations."""
@@ -143,6 +150,7 @@ class TestProjectCRUD:
 
         # Cleanup
         dh.delete_project(p.name)
+        time.sleep(2)
 
     def test_export_import(self):
         """Test export and import operations."""
@@ -161,6 +169,7 @@ class TestProjectCRUD:
 
         # Delete project
         dh.delete_project(p.name)
+        time.sleep(2)
 
         # Import project back
         p2 = dh.import_project(export_path, reset_id=False)
@@ -178,6 +187,7 @@ class TestProjectCRUD:
 
         # Cleanup
         dh.delete_project(p2.name)
+        time.sleep(2)
         Path(export_path).unlink(missing_ok=True)
 
     def test_load(self):
@@ -204,4 +214,5 @@ class TestProjectCRUD:
 
         # Cleanup
         dh.delete_project(p.name)
+        time.sleep(2)
         Path(export_path).unlink(missing_ok=True)

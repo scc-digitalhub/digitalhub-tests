@@ -43,11 +43,13 @@ class TestTaskCRUD:
             assert t.spec.function == f._get_executable_string()
             time.sleep(2)
             dh.delete_task(t.key)
+            time.sleep(2)
 
             # Test module-level create + delete by name and id
             t = f.new_task(action=action)
             time.sleep(2)
             dh.delete_task(t.key)
+            time.sleep(2)
 
         dh.delete_function(f.key)
         time.sleep(2)
@@ -70,6 +72,7 @@ class TestTaskCRUD:
 
         for obj in l_obj:
             dh.delete_task(obj.key)
+            time.sleep(2)
 
         dh.delete_function(f.key)
         time.sleep(2)
@@ -96,6 +99,7 @@ class TestTaskCRUD:
         l_obj = dh.list_tasks(self.project.name)
         for obj in l_obj:
             dh.delete_task(obj.key)
+            time.sleep(2)
 
         dh.delete_function(f.key)
         time.sleep(2)
@@ -116,6 +120,7 @@ class TestTaskCRUD:
         assert Path(export_path).exists()
 
         dh.delete_task(task.key)
+        time.sleep(2)
         assert len(dh.list_tasks(self.project.name)) == 0
 
         imported = dh.import_task(file=export_path)
@@ -124,6 +129,7 @@ class TestTaskCRUD:
         assert imported.kind == f"container+{action}"
 
         dh.delete_task(imported.key)
+        time.sleep(2)
         Path(export_path).unlink()
 
         dh.delete_function(f.key)

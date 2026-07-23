@@ -7,6 +7,7 @@ Unit tests for the entity Artifact
 
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -34,14 +35,17 @@ class TestLogCRUD:
         name = "test"
         try:
             self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
+            time.sleep(2)
         except Exception:
             pass
         try:
             self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
+            time.sleep(2)
         except Exception:
             pass
         try:
             self.project.delete_model(name, delete_all_versions=True, cascade=False)
+            time.sleep(2)
         except Exception:
             pass
 
@@ -57,6 +61,7 @@ class TestLogCRUD:
         self.project.log_generic_artifact(name, **common_artifact_kwargs)
         assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
+        time.sleep(2)
 
         # Log dataitems
         common_dataitem_kwargs = {
@@ -99,6 +104,7 @@ class TestLogCRUD:
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 14
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
+        time.sleep(2)
 
         # Log models
         common_model_kwargs = {
@@ -124,6 +130,7 @@ class TestLogCRUD:
         self.project.log_mlflow(name, **common_model_kwargs)
         assert len(dh.get_model_versions(name, project=self.project.name)) == 16
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
+        time.sleep(2)
 
     def test_drop_existing(self):
         """Test overwrite functionality for log methods."""
@@ -157,3 +164,4 @@ class TestLogCRUD:
             log_fn(name, kind, source=self.path, drop_existing=True)
             assert len(get_versions_fn(name, project=self.project.name)) == 1
             delete_fn(name, delete_all_versions=True, cascade=False)
+            time.sleep(2)

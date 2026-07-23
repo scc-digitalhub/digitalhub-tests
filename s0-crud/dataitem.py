@@ -7,6 +7,7 @@ Unit tests for the entity Dataitem
 
 from __future__ import annotations
 
+import time
 import typing
 from pathlib import Path
 
@@ -59,6 +60,7 @@ class TestDataitemCRUD:
             assert d.name == i["name"]
             assert d.kind == i["kind"]
             dh.delete_dataitem(d.key, cascade=False)
+            time.sleep(2)
 
             # Test module-level create + delete by name and id
             d = dh.new_dataitem(self.project.name, **i)
@@ -68,9 +70,11 @@ class TestDataitemCRUD:
                 entity_id=d.id,
                 cascade=False,
             )
+            time.sleep(2)
             # Test project-level create + delete
             d = self.project.new_dataitem(**i)
             self.project.delete_dataitem(d.key, cascade=False)
+            time.sleep(2)
 
         assert dh.list_dataitems(self.project.name) == []
 
@@ -95,6 +99,7 @@ class TestDataitemCRUD:
                 delete_all_versions=True,
                 cascade=False,
             )
+            time.sleep(2)
 
         assert len(dh.list_dataitems(self.project.name)) == 0
 
@@ -118,6 +123,7 @@ class TestDataitemCRUD:
         l_obj = dh.list_dataitems(self.project.name)
         for obj in l_obj:
             dh.delete_dataitem(obj.key, cascade=False)
+            time.sleep(2)
 
         assert len(dh.list_dataitems(self.project.name)) == 0
 
@@ -146,6 +152,7 @@ class TestDataitemCRUD:
 
         # Cleanup
         dh.delete_dataitem(di.key, cascade=False)
+        time.sleep(2)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -180,6 +187,7 @@ class TestDataitemCRUD:
             delete_all_versions=True,
             cascade=False,
         )
+        time.sleep(2)
         assert len(dh.list_dataitems(self.project.name)) == 0
 
     def test_import_export(self):
@@ -199,6 +207,7 @@ class TestDataitemCRUD:
         assert Path(export_path).exists()
 
         dh.delete_dataitem(di.key, cascade=False)
+        time.sleep(2)
         assert len(dh.list_dataitems(self.project.name)) == 0
 
         imported = dh.import_dataitem(file=export_path)
@@ -208,6 +217,7 @@ class TestDataitemCRUD:
         assert imported.metadata.description == description
 
         dh.delete_dataitem(imported.key)
+        time.sleep(2)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -230,4 +240,5 @@ class TestDataitemCRUD:
         assert updated.metadata.description == description
 
         self.project.delete_dataitem(di.key, cascade=False)
+        time.sleep(2)
         assert len(self.project.list_dataitems()) == 0

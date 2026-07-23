@@ -56,11 +56,13 @@ class TestRunCRUD:
             assert isinstance(r, Run)
             assert r.kind == f"python+{action}:run"
             dh.delete_run(r.key)
+            time.sleep(2)
 
             # Test module-level create + delete by id
             r = task.run(**RUN_DICTS[0])
             time.sleep(2)
             dh.delete_run(r.id, project=self.project.name, entity_id=r.id)
+            time.sleep(2)
 
             f.delete_task(action=action)
 
@@ -88,6 +90,7 @@ class TestRunCRUD:
         time.sleep(2)
         for obj in l_obj:
             dh.delete_run(obj.key)
+            time.sleep(2)
         time.sleep(2)
 
         f.delete_task(action="job")
@@ -119,6 +122,7 @@ class TestRunCRUD:
         time.sleep(2)
         for obj in l_obj:
             dh.delete_run(obj.key)
+            time.sleep(2)
 
         f.delete_task(action="job")
         time.sleep(2)
@@ -152,6 +156,7 @@ class TestRunCRUD:
 
         # Cleanup
         dh.delete_run(run.key)
+        time.sleep(2)
         f.delete_task(action="job")
         dh.delete_function(f.key)
         time.sleep(2)
@@ -177,6 +182,7 @@ class TestRunCRUD:
         assert imported.kind == "python+job:run"
 
         dh.delete_run(imported.key)
+        time.sleep(2)
         Path(export_path).unlink()
 
         f.delete_task(action="job")

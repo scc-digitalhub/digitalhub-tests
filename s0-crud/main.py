@@ -5,6 +5,7 @@ Main test runner for CRUD tests.
 
 import os
 import sys
+import time
 from pathlib import Path
 
 import digitalhub as dh
@@ -45,6 +46,7 @@ def main():
     logger.info("DIGITALHUB SDK - CRUD TESTS")
 
     dh.delete_project(PROJECT_NAME)
+    time.sleep(2)
     p = dh.get_or_create_project(PROJECT_NAME)
     p.share("*")
 

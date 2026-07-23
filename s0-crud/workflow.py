@@ -50,14 +50,17 @@ class TestWorkflowCRUD:
             assert w.name == i["name"]
             assert w.kind == i["kind"]
             dh.delete_workflow(w.key)
+            time.sleep(2)
 
             # Test module-level create + delete by name and id
             w = dh.new_workflow(self.project.name, **i)
             dh.delete_workflow(w.name, project=self.project.name, entity_id=w.id)
+            time.sleep(2)
 
             # Test project-level create + delete
             w = self.project.new_workflow(**i)
             self.project.delete_workflow(w.key)
+            time.sleep(2)
 
         assert dh.list_workflows(self.project.name) == []
 
@@ -79,6 +82,7 @@ class TestWorkflowCRUD:
             dh.delete_workflow(
                 obj.name, project=self.project.name, delete_all_versions=True
             )
+            time.sleep(2)
         time.sleep(2)
 
         assert len(dh.list_workflows(self.project.name)) == 0
@@ -105,6 +109,7 @@ class TestWorkflowCRUD:
         time.sleep(2)
         for obj in l_obj:
             dh.delete_workflow(obj.key)
+            time.sleep(2)
         time.sleep(2)
 
         assert len(dh.list_workflows(self.project.name)) == 0
@@ -134,6 +139,7 @@ class TestWorkflowCRUD:
 
         # Cleanup
         dh.delete_workflow(wf.key)
+        time.sleep(2)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -189,6 +195,7 @@ class TestWorkflowCRUD:
         assert Path(export_path).exists()
 
         dh.delete_workflow(wf.key)
+        time.sleep(2)
         assert len(dh.list_workflows(self.project.name)) == 0
 
         imported = dh.import_workflow(file=export_path)
@@ -198,6 +205,7 @@ class TestWorkflowCRUD:
         assert imported.metadata.description == description
 
         dh.delete_workflow(imported.key)
+        time.sleep(2)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -220,4 +228,5 @@ class TestWorkflowCRUD:
         assert updated.metadata.description == description
 
         self.project.delete_workflow(wf.key)
+        time.sleep(2)
         assert len(self.project.list_workflows()) == 0
