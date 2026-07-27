@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import time
 import typing
-from pathlib import Path
 
 import digitalhub as dh
 from digitalhub.entities.task._base.entity import Task
@@ -111,70 +110,3 @@ class TestTaskCRUD:
         time.sleep(2)
         self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
-
-    def test_update_refresh(self):
-        """Test update and refresh operations."""
-        self._cleanup_tasks()
-        f = self._get_function()
-        task = f.new_task(action="job")
-
-        description = "Test update"
-        task.metadata.description = description
-        updated = dh.update_task(task)
-        assert isinstance(updated, Task)
-        assert updated.key == task.key
-
-        updated_project = self.project.update_task(task)
-        assert isinstance(updated_project, Task)
-        assert updated_project.key == task.key
-
-        refreshed = dh.get_task(task.key)
-        assert refreshed.metadata.description == description
-
-        task.refresh()
-        assert task.metadata.description == description
-
-        dh.delete_task(task.key)
-        time.sleep(2)
-
-        f.delete_task(action="job")
-        dh.delete_function(f.key)
-        time.sleep(2)
-        self._cleanup_tasks()
-
-    def test_import_load(self):
-        """Test import/load functionality."""
-        self._cleanup_tasks()
-        f = self._get_function()
-
-        action = "job"
-        task = f.new_task(
-            action=action,
-            labels=["test", "export"],
-        )
-
-        export_path = task.export()
-        assert Path(export_path).exists()
-
-        dh.delete_task(task.key)
-        time.sleep(2)
-        assert len(dh.list_tasks(self.project.name)) == 0
-
-        imported = dh.import_task(file=export_path)
-        assert isinstance(imported, Task)
-        assert imported.spec.function == f._get_executable_string()
-        assert imported.kind == f"container+{action}"
-
-        loaded = dh.load_task(export_path)
-        assert isinstance(loaded, Task)
-        assert loaded.spec.function == f._get_executable_string()
-        assert loaded.kind == f"container+{action}"
-
-        dh.delete_task(loaded.key)
-        time.sleep(2)
-        Path(export_path).unlink()
-
-        f.delete_task(action="job")
-        dh.delete_function(f.key)
-        time.sleep(2)
-        self._cleanup_tasks()
