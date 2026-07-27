@@ -52,9 +52,8 @@ def train_model(project, di):
         "precision": sklearn.metrics.precision_score(y_test, y_predict),
         "recall": sklearn.metrics.recall_score(y_test, y_predict),
     }
-    model = project.log_model(
+    model = project.log_sklearn(
         name="breast-cancer-classifier",
-        kind="sklearn",
         source="./model/",
     )
     model.log_metrics(metrics)

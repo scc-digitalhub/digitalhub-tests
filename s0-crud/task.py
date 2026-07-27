@@ -55,6 +55,32 @@ class TestTaskCRUD:
         time.sleep(2)
         assert dh.list_tasks(self.project.name) == []
 
+    def test_update_refresh(self):
+        """Test update and refresh operations."""
+        f = self._get_function()
+        task = f.new_task(action="job")
+
+        labels = ["test", "update"]
+        task.metadata.labels = labels
+        updated = dh.update_task(task)
+        assert updated.metadata.labels == labels
+
+        updated_project = self.project.update_task(task)
+        assert updated_project.metadata.labels == labels
+
+        refreshed = dh.get_task(task.key)
+        assert refreshed.metadata.labels == labels
+
+        task.refresh()
+        assert task.metadata.labels == labels
+
+        dh.delete_task(task.key)
+        time.sleep(2)
+
+        f.delete_task(action="job")
+        dh.delete_function(f.key)
+        time.sleep(2)
+
     def test_list(self):
         """Test listing tasks."""
         f = self._get_function()
@@ -105,8 +131,8 @@ class TestTaskCRUD:
         time.sleep(2)
         assert dh.list_tasks(self.project.name) == []
 
-    def test_import_export(self):
-        """Test import/export functionality."""
+    def test_import_load(self):
+        """Test import/load functionality."""
         f = self._get_function()
 
         # Create task
@@ -129,6 +155,14 @@ class TestTaskCRUD:
         assert imported.kind == f"container+{action}"
 
         dh.delete_task(imported.key)
+        time.sleep(2)
+
+        loaded = dh.load_task(export_path)
+        assert isinstance(loaded, Task)
+        assert loaded.spec.function == f._get_executable_string()
+        assert loaded.kind == f"container+{action}"
+
+        dh.delete_task(loaded.key)
         time.sleep(2)
         Path(export_path).unlink()
 

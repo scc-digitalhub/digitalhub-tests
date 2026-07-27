@@ -144,7 +144,11 @@ class TestRunCRUD:
         # Update labels
         labels = ["test", "update"]
         run.metadata.labels = labels
-        run.save(update=True)
+        updated = dh.update_run(run)
+        assert updated.metadata.labels == labels
+
+        updated_project = self.project.update_run(run)
+        assert updated_project.metadata.labels == labels
 
         # Verify update
         refreshed = dh.get_run(run.key)
@@ -161,8 +165,8 @@ class TestRunCRUD:
         dh.delete_function(f.key)
         time.sleep(2)
 
-    def test_import_export(self):
-        """Test import/export functionality."""
+    def test_import_load(self):
+        """Test import/load functionality."""
         f = self._get_function()
         task = f.new_task(action="job")
 
@@ -182,6 +186,13 @@ class TestRunCRUD:
         assert imported.kind == "python+job:run"
 
         dh.delete_run(imported.key)
+        time.sleep(2)
+
+        loaded = dh.load_run(export_path)
+        assert isinstance(loaded, Run)
+        assert loaded.kind == "python+job:run"
+
+        dh.delete_run(loaded.key)
         time.sleep(2)
         Path(export_path).unlink()
 

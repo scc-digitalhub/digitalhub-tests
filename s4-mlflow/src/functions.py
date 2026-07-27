@@ -32,7 +32,7 @@ def train_model(project):
     model_params, metrics = _from_mlflow_run(run_id)
 
     # Register model in DigitalHub with MLflow metadata
-    model = project.log_model(name="iris-classifier", kind="mlflow", **model_params)
+    model = project.log_mlflow(name="iris-classifier", **model_params)
     model.log_metrics(metrics)
     return model
 

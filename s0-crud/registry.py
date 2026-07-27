@@ -1,4 +1,5 @@
 from artifact import TestArtifactCRUD
+from containerimage import TestContainerimageCRUD
 from dataitem import TestDataitemCRUD
 from function import TestFunctionCRUD
 from log_test import TestLogCRUD
@@ -14,6 +15,7 @@ TEST_CLASSES = [
     (TestProjectCRUD, "TestProjectCRUD"),
     (TestArtifactCRUD, "TestArtifactCRUD"),
     (TestDataitemCRUD, "TestDataitemCRUD"),
+    (TestContainerimageCRUD, "TestContainerimageCRUD"),
     (TestModelCRUD, "TestModelCRUD"),
     (TestSecretCRUD, "TestSecretCRUD"),
     (TestFunctionCRUD, "TestFunctionCRUD"),
