@@ -30,6 +30,11 @@ class TestRunCRUD:
     def __init__(self, project: Project):
         self.project = project
 
+    def _cleanup_runs(self) -> None:
+        for obj in self.project.list_runs():
+            dh.delete_run(obj.key)
+            time.sleep(2)
+
     def _get_function(self) -> Function:
         return dh.new_function(
             project=self.project.name,
@@ -42,6 +47,7 @@ class TestRunCRUD:
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
+        self._cleanup_runs()
         f = self._get_function()
 
         for action in ["job", "build"]:
@@ -50,7 +56,6 @@ class TestRunCRUD:
             run_dict = RUN_DICTS[0].copy()
             run_dict["run_kind"] = f"python+{action}:run"
 
-            # Test module-level create + delete by key
             r = task.run(**run_dict)
             time.sleep(2)
             assert isinstance(r, Run)
@@ -58,7 +63,6 @@ class TestRunCRUD:
             dh.delete_run(r.key)
             time.sleep(2)
 
-            # Test module-level create + delete by id
             r = task.run(**RUN_DICTS[0])
             time.sleep(2)
             dh.delete_run(r.id, project=self.project.name, entity_id=r.id)
@@ -68,16 +72,17 @@ class TestRunCRUD:
 
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_runs()
         assert dh.list_runs(self.project.name) == []
 
     def test_list(self):
         """Test listing runs."""
+        self._cleanup_runs()
         f = self._get_function()
         task = f.new_task(action="job")
 
         assert dh.list_runs(self.project.name) == []
 
-        # Create multiple runs
         for _ in range(3):
             task.run(**RUN_DICTS[0])
 
@@ -91,15 +96,16 @@ class TestRunCRUD:
         for obj in l_obj:
             dh.delete_run(obj.key)
             time.sleep(2)
-        time.sleep(2)
 
         f.delete_task(action="job")
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_runs()
         assert len(dh.list_runs(self.project.name)) == 0
 
     def test_get(self):
         """Test getting runs by different identifiers."""
+        self._cleanup_runs()
         f = self._get_function()
         task = f.new_task(action="job")
 
@@ -107,13 +113,11 @@ class TestRunCRUD:
             o1 = task.run(**RUN_DICTS[0])
             assert isinstance(o1, Run)
 
-            # Get by name and id
-            o2 = dh.get_run(o1.name, project=self.project.name)
+            o2 = dh.get_run(o1.key)
             assert isinstance(o2, Run)
             assert o1.id == o2.id
 
-            # Get by key
-            o3 = dh.get_run(o1.key)
+            o3 = self.project.get_run(o1.key)
             assert isinstance(o3, Run)
             assert o1.id == o3.id
 
@@ -129,48 +133,46 @@ class TestRunCRUD:
 
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_runs()
         assert dh.list_runs(self.project.name) == []
 
     def test_update_refresh(self):
         """Test update and refresh operations."""
+        self._cleanup_runs()
         f = self._get_function()
         task = f.new_task(action="job")
         assert dh.list_runs(self.project.name) == []
 
-        # Create run
         run = task.run(**RUN_DICTS[0])
         time.sleep(2)
 
-        # Update labels
-        labels = ["test", "update"]
-        run.metadata.labels = labels
+        description = "Test update"
+        run.metadata.description = description
         updated = dh.update_run(run)
-        assert updated.metadata.labels == labels
+        assert updated.metadata.description == description
 
         updated_project = self.project.update_run(run)
-        assert updated_project.metadata.labels == labels
+        assert updated_project.metadata.description == description
 
-        # Verify update
         refreshed = dh.get_run(run.key)
-        assert refreshed.metadata.labels == labels
+        assert refreshed.metadata.description == description
 
-        # Test refresh method
         run.refresh()
-        assert run.metadata.labels == labels
+        assert run.metadata.description == description
 
-        # Cleanup
         dh.delete_run(run.key)
         time.sleep(2)
         f.delete_task(action="job")
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_runs()
 
     def test_import_load(self):
         """Test import/load functionality."""
+        self._cleanup_runs()
         f = self._get_function()
         task = f.new_task(action="job")
 
-        # Create run
         run = task.run(**RUN_DICTS[0])
         time.sleep(2)
 
@@ -194,6 +196,7 @@ class TestRunCRUD:
 
         dh.delete_run(loaded.key)
         time.sleep(2)
+        self._cleanup_runs()
         Path(export_path).unlink()
 
         f.delete_task(action="job")

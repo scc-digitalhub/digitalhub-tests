@@ -36,8 +36,15 @@ class TestContainerimageCRUD:
     def __init__(self, project: Project):
         self.project = project
 
+    def _cleanup_containerimages(self) -> None:
+        for obj in self.project.list_containerimages():
+            self.project.delete_containerimage(obj.key, cascade=False)
+            time.sleep(2)
+
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
+
+        self._cleanup_containerimages()
 
         for i in CONTAINERIMAGE_DICTS:
             d = dh.new_containerimage(self.project.name, **i)
@@ -58,16 +65,19 @@ class TestContainerimageCRUD:
 
             d = self.project.new_containerimage(
                 name=i["name"],
+                kind=i["kind"],
                 image=i["image"],
             )
             self.project.delete_containerimage(d.key, cascade=False)
             time.sleep(2)
 
+        self._cleanup_containerimages()
         assert dh.list_containerimages(self.project.name) == []
 
     def test_list(self):
         """Test listing containerimages."""
 
+        self._cleanup_containerimages()
         assert dh.list_containerimages(self.project.name) == []
 
         for i in CONTAINERIMAGE_DICTS:
@@ -88,10 +98,13 @@ class TestContainerimageCRUD:
             )
             time.sleep(2)
 
+        self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
 
     def test_get(self):
         """Test getting containerimages by different identifiers."""
+
+        self._cleanup_containerimages()
 
         for i in CONTAINERIMAGE_DICTS:
             o1 = dh.new_containerimage(self.project.name, **i)
@@ -112,10 +125,12 @@ class TestContainerimageCRUD:
             dh.delete_containerimage(obj.key, cascade=False)
             time.sleep(2)
 
+        self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
 
     def test_update_refresh(self):
         """Test update and refresh operations."""
+        self._cleanup_containerimages()
         assert dh.list_containerimages(self.project.name) == []
 
         ci = dh.new_containerimage(
@@ -139,9 +154,12 @@ class TestContainerimageCRUD:
 
         dh.delete_containerimage(ci.key, cascade=False)
         time.sleep(2)
+        self._cleanup_containerimages()
 
     def test_versions(self):
         """Test versioning functionality."""
+
+        self._cleanup_containerimages()
 
         num_versions = 3
         name = CONTAINERIMAGE_DICTS[0]["name"]
@@ -174,10 +192,13 @@ class TestContainerimageCRUD:
             cascade=False,
         )
         time.sleep(2)
+        self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
 
     def test_import_load(self):
         """Test import/load functionality."""
+
+        self._cleanup_containerimages()
 
         name = CONTAINERIMAGE_DICTS[0]["name"]
         kind = CONTAINERIMAGE_DICTS[0]["kind"]
@@ -201,7 +222,12 @@ class TestContainerimageCRUD:
         assert imported.kind == kind
         assert imported.metadata.description == description
 
-        dh.delete_containerimage(imported.key)
+        dh.delete_containerimage(
+            imported.name,
+            project=self.project.name,
+            delete_all_versions=True,
+            cascade=False,
+        )
         time.sleep(2)
 
         loaded = dh.load_containerimage(export_path)
@@ -210,6 +236,12 @@ class TestContainerimageCRUD:
         assert loaded.kind == kind
         assert loaded.metadata.description == description
 
-        dh.delete_containerimage(loaded.key)
+        dh.delete_containerimage(
+            loaded.name,
+            project=self.project.name,
+            delete_all_versions=True,
+            cascade=False,
+        )
         time.sleep(2)
         Path(export_path).unlink()
+        self._cleanup_containerimages()

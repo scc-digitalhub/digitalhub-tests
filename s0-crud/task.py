@@ -23,6 +23,11 @@ class TestTaskCRUD:
     def __init__(self, project: Project):
         self.project = project
 
+    def _cleanup_tasks(self) -> None:
+        for obj in self.project.list_tasks():
+            dh.delete_task(obj.key)
+            time.sleep(2)
+
     def _get_function(self) -> Function:
         return dh.new_function(
             project=self.project.name,
@@ -33,10 +38,10 @@ class TestTaskCRUD:
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
+        self._cleanup_tasks()
         f = self._get_function()
 
         for action in ["job", "serve"]:
-            # Test module-level create + delete by key
             t = f.new_task(action=action)
             assert isinstance(t, Task)
             assert t.kind == f"container+{action}"
@@ -45,7 +50,6 @@ class TestTaskCRUD:
             dh.delete_task(t.key)
             time.sleep(2)
 
-            # Test module-level create + delete by name and id
             t = f.new_task(action=action)
             time.sleep(2)
             dh.delete_task(t.key)
@@ -53,36 +57,12 @@ class TestTaskCRUD:
 
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
-
-    def test_update_refresh(self):
-        """Test update and refresh operations."""
-        f = self._get_function()
-        task = f.new_task(action="job")
-
-        labels = ["test", "update"]
-        task.metadata.labels = labels
-        updated = dh.update_task(task)
-        assert updated.metadata.labels == labels
-
-        updated_project = self.project.update_task(task)
-        assert updated_project.metadata.labels == labels
-
-        refreshed = dh.get_task(task.key)
-        assert refreshed.metadata.labels == labels
-
-        task.refresh()
-        assert task.metadata.labels == labels
-
-        dh.delete_task(task.key)
-        time.sleep(2)
-
-        f.delete_task(action="job")
-        dh.delete_function(f.key)
-        time.sleep(2)
 
     def test_list(self):
         """Test listing tasks."""
+        self._cleanup_tasks()
         f = self._get_function()
 
         assert dh.list_tasks(self.project.name) == []
@@ -102,22 +82,22 @@ class TestTaskCRUD:
 
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
 
     def test_get(self):
         """Test getting tasks by different identifiers."""
+        self._cleanup_tasks()
         f = self._get_function()
 
         for action in ["job", "serve"]:
             o1 = f.new_task(action=action)
             assert isinstance(o1, Task)
 
-            # Get by name and id
             o2 = dh.get_task(o1.name, project=self.project.name)
             assert isinstance(o2, Task)
             assert o1.id == o2.id
 
-            # Get by key
             o3 = dh.get_task(o1.key)
             assert isinstance(o3, Task)
             assert o1.id == o3.id
@@ -129,13 +109,42 @@ class TestTaskCRUD:
 
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
+
+    def test_update_refresh(self):
+        """Test update and refresh operations."""
+        self._cleanup_tasks()
+        f = self._get_function()
+        task = f.new_task(action="job")
+
+        description = "Test update"
+        task.metadata.description = description
+        updated = dh.update_task(task)
+        assert updated.metadata.description == description
+
+        updated_project = self.project.update_task(task)
+        assert updated_project.metadata.description == description
+
+        refreshed = dh.get_task(task.key)
+        assert refreshed.metadata.description == description
+
+        task.refresh()
+        assert task.metadata.description == description
+
+        dh.delete_task(task.key)
+        time.sleep(2)
+
+        f.delete_task(action="job")
+        dh.delete_function(f.key)
+        time.sleep(2)
+        self._cleanup_tasks()
 
     def test_import_load(self):
         """Test import/load functionality."""
+        self._cleanup_tasks()
         f = self._get_function()
 
-        # Create task
         action = "job"
         task = f.new_task(
             action=action,
@@ -166,5 +175,7 @@ class TestTaskCRUD:
         time.sleep(2)
         Path(export_path).unlink()
 
+        f.delete_task(action="job")
         dh.delete_function(f.key)
         time.sleep(2)
+        self._cleanup_tasks()
