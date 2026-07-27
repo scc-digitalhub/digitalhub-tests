@@ -56,9 +56,9 @@ class TestLogCRUD:
             "labels": ["test", "artifact"],
         }
         dh.log_artifact(self.project.name, name, "artifact", **common_artifact_kwargs)
-        dh.log_generic_artifact(self.project.name, name, **common_artifact_kwargs)
+        dh.log_artifact_artifact(self.project.name, name, **common_artifact_kwargs)
         self.project.log_artifact(name, "artifact", **common_artifact_kwargs)
-        self.project.log_generic_artifact(name, **common_artifact_kwargs)
+        self.project.log_artifact_artifact(name, **common_artifact_kwargs)
         assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
@@ -86,7 +86,7 @@ class TestLogCRUD:
         dh.log_croissant(
             self.project.name, name, source=self.cr_path, **common_dataitem_kwargs
         )
-        dh.log_generic_dataitem(
+        dh.log_dataitem_dataitem(
             self.project.name, name, source=self.path, **common_dataitem_kwargs
         )
         self.project.log_table(name, source=self.path, **common_dataitem_kwargs)
@@ -98,7 +98,7 @@ class TestLogCRUD:
         self.project.log_dataitem(
             name, "table", data=self.dfpl, **common_dataitem_kwargs
         )
-        self.project.log_generic_dataitem(
+        self.project.log_dataitem_dataitem(
             name, source=self.path, **common_dataitem_kwargs
         )
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
@@ -116,7 +116,7 @@ class TestLogCRUD:
         dh.log_model(self.project.name, name, "huggingface", **common_model_kwargs)
         dh.log_model(self.project.name, name, "sklearn", **common_model_kwargs)
         dh.log_model(self.project.name, name, "mlflow", **common_model_kwargs)
-        dh.log_generic_model(self.project.name, name, **common_model_kwargs)
+        dh.log_model_model(self.project.name, name, **common_model_kwargs)
         dh.log_huggingface(self.project.name, name, **common_model_kwargs)
         dh.log_sklearn(self.project.name, name, **common_model_kwargs)
         dh.log_mlflow(self.project.name, name, **common_model_kwargs)
@@ -124,7 +124,7 @@ class TestLogCRUD:
         self.project.log_model(name, "huggingface", **common_model_kwargs)
         self.project.log_model(name, "sklearn", **common_model_kwargs)
         self.project.log_model(name, "mlflow", **common_model_kwargs)
-        self.project.log_generic_model(name, **common_model_kwargs)
+        self.project.log_model_model(name, **common_model_kwargs)
         self.project.log_huggingface(name, **common_model_kwargs)
         self.project.log_sklearn(name, **common_model_kwargs)
         self.project.log_mlflow(name, **common_model_kwargs)
