@@ -39,7 +39,7 @@ class TestContainerimageCRUD:
     def _cleanup_containerimages(self) -> None:
         for obj in self.project.list_containerimages():
             self.project.delete_containerimage(obj.key, cascade=False)
-            time.sleep(2)
+            time.sleep(1)
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
