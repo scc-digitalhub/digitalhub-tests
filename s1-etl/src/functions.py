@@ -64,8 +64,8 @@ def process_measures(di):
     ls = []
     for key in KEYS:
         k = key.split("-")[0]
-        xdf = rdf[COLUMNS + [key]]
-        xdf["time"] = xdf.data.apply(lambda x: x + " " + k)
+        xdf = rdf[COLUMNS + [key]].copy()
+        xdf["time"] = xdf["data"] + " " + k
         xdf["value"] = xdf[key]
         ls.append(xdf[["time", "codice spira", "value"]])
     return pd.concat(ls)

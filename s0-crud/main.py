@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Main test runner for CRUD tests.
 """
@@ -33,8 +32,8 @@ def run_test_class(test_class, class_name, project):
             logger.info("  ▶ %s...", method_name)
             getattr(instance, method_name)()
             passed += 1
-        except Exception as e:
-            logger.exception("✗ FAILED: %s", e)
+        except Exception:
+            logger.exception("✗ FAILED")
             failed += 1
 
     logger.info("  Results: %s passed, %s failed", passed, failed)

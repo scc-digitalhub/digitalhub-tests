@@ -45,14 +45,11 @@ TRIGGER_DICTS = [
 class TestTriggerCRUD:
     def __init__(self, project: Project):
         self.project = project
-        try:
-            names = [i["name"] for i in TRIGGER_DICTS]
-            for t in dh.list_triggers(self.project.name):
-                if t.name in names:
-                    dh.delete_trigger(t.key)
-                    time.sleep(2)
-        except Exception:
-            pass
+        names = {i["name"] for i in TRIGGER_DICTS}
+        for trigger in self.project.list_triggers():
+            if trigger.name in names:
+                dh.delete_trigger(trigger.key)
+                time.sleep(2)
 
     def _get_function(self) -> Function:
         return dh.new_function(

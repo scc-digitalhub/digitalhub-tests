@@ -62,21 +62,11 @@ class TestProjectCRUD:
     def __init__(self, _: Project):
         # Note: This class doesn't use the passed project
         # since it creates/tests its own projects
-        try:
-            dh.delete_project("test-project-1")
-            time.sleep(2)
-        except Exception:
-            pass
-        try:
-            dh.delete_project("test-project-2")
-            time.sleep(2)
-        except Exception:
-            pass
-        try:
-            dh.delete_project("test-project-3")
-            time.sleep(2)
-        except Exception:
-            pass
+        existing_projects = {project.name for project in dh.list_projects()}
+        for project_name in ("test-project-1", "test-project-2", "test-project-3"):
+            if project_name in existing_projects:
+                dh.delete_project(project_name)
+                time.sleep(2)
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""

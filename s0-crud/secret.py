@@ -29,12 +29,10 @@ class TestSecretCRUD:
     def __init__(self, project: Project):
         self.project = project
         for i in SECRET_DICTS:
-            try:
-                s = dh.get_secret(i["name"], project=self.project.name)
-                dh.delete_secret(s.key)
-                time.sleep(2)
-            except Exception:
-                pass
+            for secret in self.project.list_secrets():
+                if secret.name == i["name"]:
+                    dh.delete_secret(secret.key)
+                    time.sleep(2)
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""

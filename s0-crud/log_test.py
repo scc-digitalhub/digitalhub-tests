@@ -33,21 +33,15 @@ class TestLogCRUD:
         """Test all log methods for different entities."""
 
         name = "test"
-        try:
+        if any(artifact.name == name for artifact in self.project.list_artifacts()):
             self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
             time.sleep(2)
-        except Exception:
-            pass
-        try:
+        if any(dataitem.name == name for dataitem in self.project.list_dataitems()):
             self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
             time.sleep(2)
-        except Exception:
-            pass
-        try:
+        if any(model.name == name for model in self.project.list_models()):
             self.project.delete_model(name, delete_all_versions=True, cascade=False)
             time.sleep(2)
-        except Exception:
-            pass
 
         # Log artifacts
         common_artifact_kwargs = {

@@ -65,12 +65,12 @@ def main() -> None:
         result.raise_for_status()
         dh.delete_run(serve_run.key)
         logger.info("Request succeeded: %s", result.text)
-    except Exception as e:
-        logger.exception("Request failed: %s", e)
+    except Exception:
+        logger.exception("Request failed")
         if result is not None:
             logger.info("Response content: %s", result.text)
         dh.delete_run(serve_run.key)
-        raise e
+        raise
 
 
 if __name__ == "__main__":
