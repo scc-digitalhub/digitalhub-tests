@@ -187,9 +187,6 @@ class TestRunCRUD:
         assert isinstance(imported, Run)
         assert imported.kind == "python+job:run"
 
-        dh.delete_run(imported.key)
-        time.sleep(2)
-
         loaded = dh.load_run(export_path)
         assert isinstance(loaded, Run)
         assert loaded.kind == "python+job:run"

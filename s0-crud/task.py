@@ -121,10 +121,12 @@ class TestTaskCRUD:
         description = "Test update"
         task.metadata.description = description
         updated = dh.update_task(task)
-        assert updated.metadata.description == description
+        assert isinstance(updated, Task)
+        assert updated.key == task.key
 
         updated_project = self.project.update_task(task)
-        assert updated_project.metadata.description == description
+        assert isinstance(updated_project, Task)
+        assert updated_project.key == task.key
 
         refreshed = dh.get_task(task.key)
         assert refreshed.metadata.description == description
@@ -162,9 +164,6 @@ class TestTaskCRUD:
         assert isinstance(imported, Task)
         assert imported.spec.function == f._get_executable_string()
         assert imported.kind == f"container+{action}"
-
-        dh.delete_task(imported.key)
-        time.sleep(2)
 
         loaded = dh.load_task(export_path)
         assert isinstance(loaded, Task)

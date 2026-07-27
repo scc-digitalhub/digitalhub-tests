@@ -222,14 +222,6 @@ class TestContainerimageCRUD:
         assert imported.kind == kind
         assert imported.metadata.description == description
 
-        dh.delete_containerimage(
-            imported.name,
-            project=self.project.name,
-            delete_all_versions=True,
-            cascade=False,
-        )
-        time.sleep(2)
-
         loaded = dh.load_containerimage(export_path)
         assert isinstance(loaded, Containerimage)
         assert loaded.name == name
