@@ -49,23 +49,27 @@ class TestLogCRUD:
             "description": "Test artifact",
             "labels": ["test", "artifact"],
         }
-        dh.log_artifact(self.project.name, name, **common_artifact_kwargs)
-        dh.log_artifact(self.project.name, name, **common_artifact_kwargs)
-        self.project.log_artifact(name, **common_artifact_kwargs)
-        self.project.log_artifact(name, **common_artifact_kwargs)
+        dh.log_artifact(self.project.name, name=name, **common_artifact_kwargs)
+        dh.log_artifact(self.project.name, name=name, **common_artifact_kwargs)
+        self.project.log_artifact(name=name, **common_artifact_kwargs)
+        self.project.log_artifact(name=name, **common_artifact_kwargs)
         assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
         # Log generic artifacts
         dh.log_generic_artifact(
-            self.project.name, name, "artifact", **common_artifact_kwargs
+            self.project.name, "artifact", name=name, **common_artifact_kwargs
         )
         dh.log_generic_artifact(
-            self.project.name, name, "artifact", **common_artifact_kwargs
+            self.project.name, "artifact", name=name, **common_artifact_kwargs
         )
-        self.project.log_generic_artifact(name, "artifact", **common_artifact_kwargs)
-        self.project.log_generic_artifact(name, "artifact", **common_artifact_kwargs)
+        self.project.log_generic_artifact(
+            "artifact", name=name, **common_artifact_kwargs
+        )
+        self.project.log_generic_artifact(
+            "artifact", name=name, **common_artifact_kwargs
+        )
         assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
@@ -76,20 +80,24 @@ class TestLogCRUD:
             "labels": ["test", "dataitem"],
         }
         dh.log_table(
-            self.project.name, name, source=self.path, **common_dataitem_kwargs
+            self.project.name, source=self.path, name=name, **common_dataitem_kwargs
         )
-        dh.log_table(self.project.name, name, data=self.dfpl, **common_dataitem_kwargs)
-        dh.log_table(self.project.name, name, data=self.dfpd, **common_dataitem_kwargs)
+        dh.log_table(
+            self.project.name, data=self.dfpl, name=name, **common_dataitem_kwargs
+        )
+        dh.log_table(
+            self.project.name, data=self.dfpd, name=name, **common_dataitem_kwargs
+        )
         dh.log_dataitem(
-            self.project.name, name, source=self.path, **common_dataitem_kwargs
+            self.project.name, source=self.path, name=name, **common_dataitem_kwargs
         )
         dh.log_croissant(
             self.project.name, name, source=self.cr_path, **common_dataitem_kwargs
         )
-        self.project.log_table(name, source=self.path, **common_dataitem_kwargs)
-        self.project.log_table(name, data=self.dfpl, **common_dataitem_kwargs)
-        self.project.log_table(name, data=self.dfpd, **common_dataitem_kwargs)
-        self.project.log_dataitem(name, source=self.path, **common_dataitem_kwargs)
+        self.project.log_table(name=name, source=self.path, **common_dataitem_kwargs)
+        self.project.log_table(name=name, data=self.dfpl, **common_dataitem_kwargs)
+        self.project.log_table(name=name, data=self.dfpd, **common_dataitem_kwargs)
+        self.project.log_dataitem(name=name, **common_dataitem_kwargs)
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 10
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
@@ -132,25 +140,29 @@ class TestLogCRUD:
             "description": "Test model",
             "labels": ["test", "model"],
         }
-        dh.log_model(self.project.name, name, **common_model_kwargs)
-        dh.log_huggingface(self.project.name, name, **common_model_kwargs)
-        dh.log_sklearn(self.project.name, name, **common_model_kwargs)
-        dh.log_mlflow(self.project.name, name, **common_model_kwargs)
-        dh.log_model(self.project.name, name, **common_model_kwargs)
-        self.project.log_model(name, **common_model_kwargs)
-        self.project.log_huggingface(name, **common_model_kwargs)
-        self.project.log_sklearn(name, **common_model_kwargs)
-        self.project.log_mlflow(name, **common_model_kwargs)
-        self.project.log_model(name, **common_model_kwargs)
+        dh.log_model(self.project.name, name=name, **common_model_kwargs)
+        dh.log_huggingface(self.project.name, name=name, **common_model_kwargs)
+        dh.log_sklearn(self.project.name, name=name, **common_model_kwargs)
+        dh.log_mlflow(self.project.name, name=name, **common_model_kwargs)
+        dh.log_model(self.project.name, name=name, **common_model_kwargs)
+        self.project.log_model(name=name, **common_model_kwargs)
+        self.project.log_huggingface(name=name, **common_model_kwargs)
+        self.project.log_sklearn(name=name, **common_model_kwargs)
+        self.project.log_mlflow(name=name, **common_model_kwargs)
+        self.project.log_model(name=name, **common_model_kwargs)
         assert len(dh.get_model_versions(name, project=self.project.name)) == 16
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
         # Log generic models
-        dh.log_generic_model(self.project.name, name, "model", **common_model_kwargs)
-        dh.log_generic_model(self.project.name, name, "model", **common_model_kwargs)
-        self.project.log_generic_model(name, "model", **common_model_kwargs)
-        self.project.log_generic_model(name, "model", **common_model_kwargs)
+        dh.log_generic_model(
+            self.project.name, "model", name=name, **common_model_kwargs
+        )
+        dh.log_generic_model(
+            self.project.name, "model", name=name, **common_model_kwargs
+        )
+        self.project.log_generic_model("model", name=name, **common_model_kwargs)
+        self.project.log_generic_model("model", name=name, **common_model_kwargs)
         assert len(dh.get_model_versions(name, project=self.project.name)) == 4
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
@@ -200,40 +212,35 @@ class TestLogCRUD:
 
         for log_fn, get_versions_fn, delete_fn, is_generic in entities:
             if is_generic:
-                log_fn(
-                    name,
+                kind = (
                     "artifact"
                     if log_fn is self.project.log_generic_artifact
                     else "dataitem"
                     if log_fn is self.project.log_generic_dataitem
-                    else "model",
-                    source=self.path,
+                    else "model"
                 )
                 log_fn(
-                    name,
-                    "artifact"
-                    if log_fn is self.project.log_generic_artifact
-                    else "dataitem"
-                    if log_fn is self.project.log_generic_dataitem
-                    else "model",
+                    kind,
                     source=self.path,
+                    name=name,
+                )
+                log_fn(
+                    kind,
+                    source=self.path,
+                    name=name,
                 )
                 assert len(get_versions_fn(name, project=self.project.name)) == 2
                 log_fn(
-                    name,
-                    "artifact"
-                    if log_fn is self.project.log_generic_artifact
-                    else "dataitem"
-                    if log_fn is self.project.log_generic_dataitem
-                    else "model",
+                    kind,
                     source=self.path,
+                    name=name,
                     drop_existing=True,
                 )
             else:
-                log_fn(name, source=self.path)
-                log_fn(name, source=self.path)
+                log_fn(source=self.path, name=name)
+                log_fn(source=self.path, name=name)
                 assert len(get_versions_fn(name, project=self.project.name)) == 2
-                log_fn(name, source=self.path, drop_existing=True)
+                log_fn(source=self.path, name=name, drop_existing=True)
             assert len(get_versions_fn(name, project=self.project.name)) == 1
             delete_fn(name, delete_all_versions=True, cascade=False)
             time.sleep(2)
