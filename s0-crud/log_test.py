@@ -167,6 +167,133 @@ class TestLogCRUD:
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
+    def test_register_methods(self):
+        """Test all register methods for different entities."""
+        name = "registered-test"
+        cleanup_steps = [
+            (self.project.list_artifacts, self.project.delete_artifact),
+            (self.project.list_dataitems, self.project.delete_dataitem),
+            (self.project.list_models, self.project.delete_model),
+        ]
+        for list_fn, delete_fn in cleanup_steps:
+            if any(entity.name == name for entity in list_fn()):
+                delete_fn(name, delete_all_versions=True, cascade=False)
+                time.sleep(2)
+
+        register_methods = [
+            (
+                dh.register_artifact,
+                self.project.register_artifact,
+                dh.get_artifact_versions,
+                self.project.delete_artifact,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_generic_artifact,
+                self.project.register_generic_artifact,
+                dh.get_artifact_versions,
+                self.project.delete_artifact,
+                self.path,
+                {"kind": "artifact"},
+            ),
+            (
+                dh.register_dataitem,
+                self.project.register_dataitem,
+                dh.get_dataitem_versions,
+                self.project.delete_dataitem,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_generic_dataitem,
+                self.project.register_generic_dataitem,
+                dh.get_dataitem_versions,
+                self.project.delete_dataitem,
+                self.path,
+                {"kind": "dataitem"},
+            ),
+            (
+                dh.register_table,
+                self.project.register_table,
+                dh.get_dataitem_versions,
+                self.project.delete_dataitem,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_croissant,
+                self.project.register_croissant,
+                dh.get_dataitem_versions,
+                self.project.delete_dataitem,
+                self.cr_path,
+                {},
+            ),
+            (
+                dh.register_model,
+                self.project.register_model,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_generic_model,
+                self.project.register_generic_model,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {"kind": "model"},
+            ),
+            (
+                dh.register_mlflow,
+                self.project.register_mlflow,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_sklearn,
+                self.project.register_sklearn,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_huggingface,
+                self.project.register_huggingface,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_tvm_ir,
+                self.project.register_tvm_ir,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+            (
+                dh.register_tvm_so,
+                self.project.register_tvm_so,
+                dh.get_model_versions,
+                self.project.delete_model,
+                self.path,
+                {},
+            ),
+        ]
+
+        for register_fn, project_register_fn, get_versions_fn, delete_fn, source, kwargs in register_methods:
+            register_fn(self.project.name, source=source, name=name, **kwargs)
+            project_register_fn(source=source, name=name, **kwargs)
+            assert len(get_versions_fn(name, project=self.project.name)) == 2
+            delete_fn(name, delete_all_versions=True, cascade=False)
+            time.sleep(2)
+
     def test_drop_existing(self):
         """Test overwrite functionality for log methods."""
         name = "test"
