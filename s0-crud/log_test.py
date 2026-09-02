@@ -287,7 +287,14 @@ class TestLogCRUD:
             ),
         ]
 
-        for register_fn, project_register_fn, get_versions_fn, delete_fn, source, kwargs in register_methods:
+        for (
+            register_fn,
+            project_register_fn,
+            get_versions_fn,
+            delete_fn,
+            source,
+            kwargs,
+        ) in register_methods:
             register_fn(self.project.name, source=source, name=name, **kwargs)
             project_register_fn(source=source, name=name, **kwargs)
             assert len(get_versions_fn(name, project=self.project.name)) == 2
