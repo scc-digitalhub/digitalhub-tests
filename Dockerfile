@@ -22,7 +22,7 @@ RUN uv pip install "digitalhub[full]==${ver_sdk}" \
                    "digitalhub-runtime-flower==${ver_flower}" \
                    "digitalhub-runtime-hera==${ver_hera}" \
                    "digitalhub-runtime-servicegraph==${ver_servicegraph}" \
-                   "digitalhub-runtime-tvm==${ver_tvm}" \
+                   "digitalhub-runtime-tvm==${ver_tvm}"
 
 RUN useradd -r -m -u 8877 nonroot
 USER 8877
