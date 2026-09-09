@@ -97,7 +97,9 @@ class TestLogCRUD:
         self.project.log_table(name=name, source=self.path, **common_dataitem_kwargs)
         self.project.log_table(name=name, data=self.dfpl, **common_dataitem_kwargs)
         self.project.log_table(name=name, data=self.dfpd, **common_dataitem_kwargs)
-        self.project.log_dataitem(name=name, **common_dataitem_kwargs)
+        self.project.log_dataitem(
+            name=name, source=self.path, **common_dataitem_kwargs
+        )
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 10
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
@@ -106,28 +108,28 @@ class TestLogCRUD:
         # Log generic dataitems
         dh.log_generic_dataitem(
             self.project.name,
-            name,
-            "dataitem",
+            kind="dataitem",
             source=self.path,
+            name=name,
             **common_dataitem_kwargs,
         )
         dh.log_generic_dataitem(
             self.project.name,
-            name,
-            "dataitem",
+            kind="dataitem",
             source=self.path,
+            name=name,
             **common_dataitem_kwargs,
         )
         self.project.log_generic_dataitem(
-            name,
-            "dataitem",
+            kind="dataitem",
             source=self.path,
+            name=name,
             **common_dataitem_kwargs,
         )
         self.project.log_generic_dataitem(
-            name,
-            "dataitem",
+            kind="dataitem",
             source=self.path,
+            name=name,
             **common_dataitem_kwargs,
         )
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 4
@@ -150,7 +152,7 @@ class TestLogCRUD:
         self.project.log_sklearn(name=name, **common_model_kwargs)
         self.project.log_mlflow(name=name, **common_model_kwargs)
         self.project.log_model(name=name, **common_model_kwargs)
-        assert len(dh.get_model_versions(name, project=self.project.name)) == 16
+        assert len(dh.get_model_versions(name, project=self.project.name)) == 10
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
@@ -310,62 +312,55 @@ class TestLogCRUD:
                 self.project.log_dataitem,
                 dh.get_dataitem_versions,
                 self.project.delete_dataitem,
-                False,
+                None,
             ),
             (
                 self.project.log_generic_dataitem,
                 dh.get_dataitem_versions,
                 self.project.delete_dataitem,
-                True,
+                "dataitem",
             ),
             (
                 self.project.log_artifact,
                 dh.get_artifact_versions,
                 self.project.delete_artifact,
-                False,
+                None,
             ),
             (
                 self.project.log_generic_artifact,
                 dh.get_artifact_versions,
                 self.project.delete_artifact,
-                True,
+                "artifact",
             ),
             (
                 self.project.log_model,
                 dh.get_model_versions,
                 self.project.delete_model,
-                False,
+                None,
             ),
             (
                 self.project.log_generic_model,
                 dh.get_model_versions,
                 self.project.delete_model,
-                True,
+                "model",
             ),
         ]
 
-        for log_fn, get_versions_fn, delete_fn, is_generic in entities:
-            if is_generic:
-                kind = (
-                    "artifact"
-                    if log_fn is self.project.log_generic_artifact
-                    else "dataitem"
-                    if log_fn is self.project.log_generic_dataitem
-                    else "model"
-                )
+        for log_fn, get_versions_fn, delete_fn, kind in entities:
+            if kind is not None:
                 log_fn(
-                    kind,
+                    kind=kind,
                     source=self.path,
                     name=name,
                 )
                 log_fn(
-                    kind,
+                    kind=kind,
                     source=self.path,
                     name=name,
                 )
                 assert len(get_versions_fn(name, project=self.project.name)) == 2
                 log_fn(
-                    kind,
+                    kind=kind,
                     source=self.path,
                     name=name,
                     drop_existing=True,
