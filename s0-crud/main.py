@@ -13,7 +13,7 @@ from registry import TEST_CLASSES
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 from logging_utils import configure_logging
 
-PROJECT_NAME = os.environ.get("PROJECT_NAME", "digitalhub-tests")
+PROJECT_NAME_TEST = os.environ.get("PROJECT_NAME_TEST", "digitalhub-tests")
 logger = configure_logging(__name__)
 
 
@@ -44,9 +44,9 @@ def main():
     """Run all CRUD tests."""
     logger.info("DIGITALHUB SDK - CRUD TESTS")
 
-    dh.delete_project(PROJECT_NAME)
+    dh.delete_project(PROJECT_NAME_TEST)
     time.sleep(2)
-    p = dh.get_or_create_project(PROJECT_NAME)
+    p = dh.get_or_create_project(PROJECT_NAME_TEST)
     p.share("*")
 
     total_passed = 0

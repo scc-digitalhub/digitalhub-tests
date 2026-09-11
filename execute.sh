@@ -7,7 +7,7 @@
 set -e
 
 # Set default project name (can be overridden by environment variable)
-export PROJECT_NAME="${PROJECT_NAME:-digitalhub-tests}"
+export PROJECT_NAME_TEST="${PROJECT_NAME_TEST:-digitalhub-tests}"
 
 if [ -z "$1" ]; then
     echo "No test folder specified - executing all tests..."
