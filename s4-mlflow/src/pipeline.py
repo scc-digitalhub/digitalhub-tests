@@ -10,7 +10,7 @@ def pipeline():
         )
         Build2 = step(
             template={"action": "build"},
-            function="train-mlflow-model",
+            function="serve-mlflow-model",
         )
 
         A = step(
