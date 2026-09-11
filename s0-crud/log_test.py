@@ -97,9 +97,7 @@ class TestLogCRUD:
         self.project.log_table(name=name, source=self.path, **common_dataitem_kwargs)
         self.project.log_table(name=name, data=self.dfpl, **common_dataitem_kwargs)
         self.project.log_table(name=name, data=self.dfpd, **common_dataitem_kwargs)
-        self.project.log_dataitem(
-            name=name, source=self.path, **common_dataitem_kwargs
-        )
+        self.project.log_dataitem(name=name, source=self.path, **common_dataitem_kwargs)
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 10
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
