@@ -83,7 +83,7 @@ def main() -> None:
     }
 
     model: ModelMlflow = train_fn.list_runs()[0].output("model")
-    serve_run: RunMlflowserveServeRun = serve_func.list_runs()[0]
+    serve_run: RunMlflowserveServeRun = serve_func.list_runs()[1]
     result = None
     try:
         result = serve_run.invoke(model_name=model.name, json=json_payload)
