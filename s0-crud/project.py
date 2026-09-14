@@ -8,24 +8,26 @@ Unit tests for the entity Project
 from __future__ import annotations
 
 import time
+import os
 from pathlib import Path
 
 import digitalhub as dh
 from digitalhub.entities.project._base.entity import Project
 
+PROJECT_NAME_TEST = os.environ.get("PROJECT_NAME_TEST", "digitalhub-tests")
 PROJECT_DICTS = [
     {
-        "name": "test-project-1",
+        "name": f"{PROJECT_NAME_TEST}-1",
         "description": "Test project 1",
         "labels": ["test", "project1"],
     },
     {
-        "name": "test-project-2",
+        "name": f"{PROJECT_NAME_TEST}-2",
         "description": "Test project 2",
         "labels": ["test", "project2"],
     },
     {
-        "name": "test-project-3",
+        "name": f"{PROJECT_NAME_TEST}-3",
         "description": "Test project 3",
     },
 ]
@@ -63,7 +65,8 @@ class TestProjectCRUD:
         # Note: This class doesn't use the passed project
         # since it creates/tests its own projects
         existing_projects = {project.name for project in dh.list_projects()}
-        for project_name in ("test-project-1", "test-project-2", "test-project-3"):
+        for i in range(2):
+            project_name = f"{PROJECT_NAME_TEST}-{i+1}"
             if project_name in existing_projects:
                 dh.delete_project(project_name)
                 time.sleep(2)
