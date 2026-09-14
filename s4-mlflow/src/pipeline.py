@@ -8,15 +8,14 @@ def pipeline():
             template={"action": "build"},
             function="train-mlflow-model",
         )
-        Build2 = step(
-            template={"action": "build"},
-            function="serve-mlflow-model",
-        )
-
         A = step(
             template={"action": "job"},
             function="train-mlflow-model",
             outputs=["model"],
+        )
+        Build2 = step(
+            template={"action": "build"},
+            function="serve-mlflow-model",
         )
         B = step(
             template={
@@ -27,5 +26,5 @@ def pipeline():
             function="serve-mlflow-model",
             inputs={"model": A.get_parameter("model")},
         )
-        [Build1, Build2] >> A >> B
+        Build1 >> A >> Build2 >> B
     return w
