@@ -7,8 +7,8 @@ Unit tests for the entity Project
 
 from __future__ import annotations
 
-import time
 import os
+import time
 from pathlib import Path
 
 import digitalhub as dh
@@ -66,7 +66,7 @@ class TestProjectCRUD:
         # since it creates/tests its own projects
         existing_projects = {project.name for project in dh.list_projects()}
         for i in range(2):
-            project_name = f"{PROJECT_NAME_TEST}-{i+1}"
+            project_name = f"{PROJECT_NAME_TEST}-{i + 1}"
             if project_name in existing_projects:
                 dh.delete_project(project_name)
                 time.sleep(2)
