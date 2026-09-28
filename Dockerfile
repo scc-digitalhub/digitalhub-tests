@@ -9,6 +9,9 @@ ARG ver_hera=0.16.0b4
 ARG ver_flower=0.16.0b3
 ARG ver_servicegraph=0.16.0b2
 ARG ver_tvm=0.16.0b0
+ARG ver_hydra=0.16.0b2
+ARG ver_ray=0.16.0b8
+
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
@@ -22,7 +25,9 @@ RUN uv pip install "digitalhub[full]==${ver_sdk}" \
                    "digitalhub-runtime-flower==${ver_flower}" \
                    "digitalhub-runtime-hera==${ver_hera}" \
                    "digitalhub-runtime-servicegraph==${ver_servicegraph}" \
-                   "digitalhub-runtime-tvm==${ver_tvm}"
+                   "digitalhub-runtime-tvm==${ver_tvm}" \
+                   "digitalhub-runtime-hydra==${ver_hydra}" \
+                   "digitalhub-runtime-ray==${ver_ray}"
 
 RUN useradd -r -m -u 8877 nonroot
 USER 8877
