@@ -106,7 +106,6 @@ class TestLogCRUD:
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
-
     def test_register_methods(self):
         """Test all register methods for different entities."""
         name = "registered-test"
