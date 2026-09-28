@@ -9,7 +9,7 @@ from pathlib import Path
 import digitalhub as dh
 
 if typing.TYPE_CHECKING:
-    from digitalhub.entities.model.mlflow.entity import ModelMlflow
+    from digitalhub_runtime_modelserve.entities.model.mlflow.entity import ModelMlflow
     from digitalhub_runtime_modelserve.entities.run.mlflowserve_serve_run.entity import (
         RunMlflowserveServeRun,
     )
