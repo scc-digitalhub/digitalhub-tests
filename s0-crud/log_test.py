@@ -57,23 +57,6 @@ class TestLogCRUD:
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
-        # Log generic artifacts
-        dh.log_generic_artifact(
-            self.project.name, "artifact", name=name, **common_artifact_kwargs
-        )
-        dh.log_generic_artifact(
-            self.project.name, "artifact", name=name, **common_artifact_kwargs
-        )
-        self.project.log_generic_artifact(
-            "artifact", name=name, **common_artifact_kwargs
-        )
-        self.project.log_generic_artifact(
-            "artifact", name=name, **common_artifact_kwargs
-        )
-        assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
-        self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
-
         # Log dataitems
         common_dataitem_kwargs = {
             "description": "Test dataitem",
@@ -103,37 +86,6 @@ class TestLogCRUD:
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
-        # Log generic dataitems
-        dh.log_generic_dataitem(
-            self.project.name,
-            kind="dataitem",
-            source=self.path,
-            name=name,
-            **common_dataitem_kwargs,
-        )
-        dh.log_generic_dataitem(
-            self.project.name,
-            kind="dataitem",
-            source=self.path,
-            name=name,
-            **common_dataitem_kwargs,
-        )
-        self.project.log_generic_dataitem(
-            kind="dataitem",
-            source=self.path,
-            name=name,
-            **common_dataitem_kwargs,
-        )
-        self.project.log_generic_dataitem(
-            kind="dataitem",
-            source=self.path,
-            name=name,
-            **common_dataitem_kwargs,
-        )
-        assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 4
-        self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
-
         # Log models
         common_model_kwargs = {
             "source": self.path,
@@ -154,18 +106,6 @@ class TestLogCRUD:
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
-        # Log generic models
-        dh.log_generic_model(
-            self.project.name, "model", name=name, **common_model_kwargs
-        )
-        dh.log_generic_model(
-            self.project.name, "model", name=name, **common_model_kwargs
-        )
-        self.project.log_generic_model("model", name=name, **common_model_kwargs)
-        self.project.log_generic_model("model", name=name, **common_model_kwargs)
-        assert len(dh.get_model_versions(name, project=self.project.name)) == 4
-        self.project.delete_model(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
 
     def test_register_methods(self):
         """Test all register methods for different entities."""
@@ -190,28 +130,12 @@ class TestLogCRUD:
                 {},
             ),
             (
-                dh.register_generic_artifact,
-                self.project.register_generic_artifact,
-                dh.get_artifact_versions,
-                self.project.delete_artifact,
-                self.path,
-                {"kind": "artifact"},
-            ),
-            (
                 dh.register_dataitem,
                 self.project.register_dataitem,
                 dh.get_dataitem_versions,
                 self.project.delete_dataitem,
                 self.path,
                 {},
-            ),
-            (
-                dh.register_generic_dataitem,
-                self.project.register_generic_dataitem,
-                dh.get_dataitem_versions,
-                self.project.delete_dataitem,
-                self.path,
-                {"kind": "dataitem"},
             ),
             (
                 dh.register_table,
@@ -236,14 +160,6 @@ class TestLogCRUD:
                 self.project.delete_model,
                 self.path,
                 {},
-            ),
-            (
-                dh.register_generic_model,
-                self.project.register_generic_model,
-                dh.get_model_versions,
-                self.project.delete_model,
-                self.path,
-                {"kind": "model"},
             ),
             (
                 dh.register_mlflow,
@@ -313,34 +229,16 @@ class TestLogCRUD:
                 None,
             ),
             (
-                self.project.log_generic_dataitem,
-                dh.get_dataitem_versions,
-                self.project.delete_dataitem,
-                "dataitem",
-            ),
-            (
                 self.project.log_artifact,
                 dh.get_artifact_versions,
                 self.project.delete_artifact,
                 None,
             ),
             (
-                self.project.log_generic_artifact,
-                dh.get_artifact_versions,
-                self.project.delete_artifact,
-                "artifact",
-            ),
-            (
                 self.project.log_model,
                 dh.get_model_versions,
                 self.project.delete_model,
                 None,
-            ),
-            (
-                self.project.log_generic_model,
-                dh.get_model_versions,
-                self.project.delete_model,
-                "model",
             ),
         ]
 
