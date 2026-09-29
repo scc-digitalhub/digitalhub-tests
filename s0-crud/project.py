@@ -114,7 +114,6 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[0]
         p = dh.new_project(**proj_dict)
-        p.share("*")
 
         # Update description via entity
         p.metadata.description = "Updated description"
@@ -147,7 +146,6 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[0]
         p = dh.new_project(**proj_dict)
-        p.share("*")
 
         # Create some entities in the project
         p.new_artifact(**artf)
@@ -185,7 +183,6 @@ class TestProjectCRUD:
 
         proj_dict = PROJECT_DICTS[1]
         p = dh.new_project(**proj_dict)
-        p.share("*")
 
         # Export to file
         export_path = p.export()
