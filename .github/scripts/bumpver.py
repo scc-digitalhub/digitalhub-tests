@@ -39,6 +39,17 @@ def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess:
     return subprocess.run(["git", *args], check=check, text=True)
 
 
+def normalize_branch(branch: str) -> str:
+    """Accept either a branch name or a refs/heads/<name> ref."""
+    prefix = "refs/heads/"
+    if branch.startswith(prefix):
+        branch = branch.removeprefix(prefix)
+    if not branch or branch.startswith("refs/"):
+        raise RuntimeError(f"Invalid branch name: {branch}")
+    run_git("check-ref-format", "--branch", branch)
+    return branch
+
+
 def dockerfile_with_version(
     content: str, library: str, version: str
 ) -> tuple[str, str]:
@@ -62,7 +73,7 @@ def update_and_push(branch: str, library: str, requested_version: str) -> None:
         raise RuntimeError(f"Unsupported library name: {library}")
 
     requested = Version(requested_version)
-    run_git("check-ref-format", "--branch", branch)
+    branch = normalize_branch(branch)
     run_git("config", "user.name", os.environ["GITHUB_ACTOR"])
     run_git(
         "config", "user.email", f"{os.environ['GITHUB_ACTOR']}@users.noreply.github.com"

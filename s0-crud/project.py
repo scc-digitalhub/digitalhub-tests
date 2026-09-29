@@ -77,7 +77,6 @@ class TestProjectCRUD:
         for i in PROJECT_DICTS:
             # Test module-level create + delete
             p = dh.new_project(**i)
-            p.share("*")
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
@@ -85,7 +84,6 @@ class TestProjectCRUD:
 
             # Test get_or_create
             p = dh.get_or_create_project(**i)
-            p.share("*")
             assert isinstance(p, Project)
             assert p.name == i["name"]
             dh.delete_project(p.name)
@@ -98,7 +96,6 @@ class TestProjectCRUD:
         projects = []
         for i in PROJECT_DICTS:
             p = dh.new_project(**i)
-            p.share("*")
             projects.append(p)
 
         # Test get
