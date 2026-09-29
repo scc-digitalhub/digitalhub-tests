@@ -69,7 +69,7 @@ class TestProjectCRUD:
             project_name = f"{PROJECT_NAME_TEST}-{i + 1}"
             if project_name in existing_projects:
                 dh.delete_project(project_name)
-                time.sleep(2)
+                time.sleep(3)
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
