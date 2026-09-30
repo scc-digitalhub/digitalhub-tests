@@ -10,7 +10,7 @@ ARG ver_flower=0.16.0b4
 ARG ver_servicegraph=0.16.0b3
 ARG ver_tvm=0.16.0b2
 ARG ver_hydra=0.16.0b3
-ARG ver_ray=0.16.0b9
+ARG ver_ray=0.16.0b10
 
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
