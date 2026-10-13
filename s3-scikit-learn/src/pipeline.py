@@ -6,11 +6,11 @@ def pipeline():
     with Workflow(entrypoint="dag") as w, DAG(name="dag"):
         A = step(
             template={"action": "build"},
-            function="prepare-data",
+            function="sklearn-train-classifier",
         )
         B = step(
             template={"action": "job"},
-            function="prepare-data",
+            function="sklearn-train-classifier",
             outputs=["dataset"],
         )
         C = step(
