@@ -4,23 +4,27 @@ from hera.workflows import DAG, Workflow
 
 def pipeline():
     with Workflow(entrypoint="dag") as w, DAG(name="dag"):
-        A = step(
+        A0 = step(
             template={"action": "build"},
-            function="sklearn-train-classifier",
+            function="prepare-data",
         )
-        B = step(
+        B0 = step(
+            template={"action": "build"},
+            function="train-classifier",
+        )
+        A = step(
             template={"action": "job"},
-            function="sklearn-train-classifier",
+            function="prepare-data",
             outputs=["dataset"],
         )
-        C = step(
+        B = step(
             template={
                 "action": "job",
                 "inputs": {"di": "{{inputs.parameters.di}}"},
             },
-            function="sklearn-train-classifier",
+            function="train-classifier",
             inputs={"di": B.get_parameter("dataset")},
         )
-        D = step(template={"action": "serve"}, function="serve-classifier")
-        A >> B >> C >> D
+        C = step(template={"action": "serve"}, function="serve-classifier")
+        [A0, B0] >> A >> B >> C
     return w

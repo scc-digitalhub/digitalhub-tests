@@ -32,17 +32,29 @@ def main() -> None:
     project.share("*")
 
     _ = project.new_function(
-        name="sklearn-train-classifier",
+        name="prepare-data",
         kind="python",
         python_version="PYTHON3_10",
         code_src=f_src,
-        handler="train_model",
+        handler="data_generator",
         requirements=[
             "numpy<2",
             "scikit-learn<1.8",
             "digitalhub-runtime-modelserve>=0.16.0b",
         ],
     )
+    _ = project.new_function(
+            name="train-classifier",
+            kind="python",
+            python_version="PYTHON3_10",
+            code_src=f_src,
+            handler="train_model",
+            requirements=[
+                "numpy<2",
+                "scikit-learn<1.8",
+                "digitalhub-runtime-modelserve>=0.16.0b",
+            ],
+        )
 
     serve_func = project.new_function(
         name="serve-classifier",
