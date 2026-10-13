@@ -37,7 +37,12 @@ def main() -> None:
         python_version="PYTHON3_10",
         code_src=f_src,
         handler="train_model",
-        requirements=["numpy<2", "mlflow<3", "scikit-learn <= 1.6.1"],
+        requirements=[
+            "numpy<2",
+            "mlflow<3",
+            "scikit-learn <= 1.6.1",
+            "digitalhub-runtime-modelserve>=0.16.0b",
+        ],
     )
 
     serve_func = project.new_function(
