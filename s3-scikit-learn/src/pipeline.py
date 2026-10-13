@@ -18,7 +18,7 @@ def pipeline():
                 "action": "job",
                 "inputs": {"di": "{{inputs.parameters.di}}"},
             },
-            function="train-classifier",
+            function="sklearn-train-classifier",
             inputs={"di": B.get_parameter("dataset")},
         )
         D = step(template={"action": "serve"}, function="serve-classifier")
