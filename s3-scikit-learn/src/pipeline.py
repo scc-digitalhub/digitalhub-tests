@@ -23,7 +23,7 @@ def pipeline():
                 "inputs": {"di": "{{inputs.parameters.di}}"},
             },
             function="train-classifier",
-            inputs={"di": B.get_parameter("dataset")},
+            inputs={"di": A.get_parameter("dataset")},
         )
         C = step(template={"action": "serve"}, function="serve-classifier")
         [A0, B0] >> A >> B >> C
