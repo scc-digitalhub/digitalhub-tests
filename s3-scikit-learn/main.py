@@ -44,17 +44,17 @@ def main() -> None:
         ],
     )
     _ = project.new_function(
-            name="train-classifier",
-            kind="python",
-            python_version="PYTHON3_10",
-            code_src=f_src,
-            handler="train_model",
-            requirements=[
-                "numpy<2",
-                "scikit-learn<1.8",
-                "digitalhub-runtime-modelserve>=0.16.0b",
-            ],
-        )
+        name="train-classifier",
+        kind="python",
+        python_version="PYTHON3_10",
+        code_src=f_src,
+        handler="train_model",
+        requirements=[
+            "numpy<2",
+            "scikit-learn<1.8",
+            "digitalhub-runtime-modelserve>=0.16.0b",
+        ],
+    )
 
     serve_func = project.new_function(
         name="serve-classifier",
