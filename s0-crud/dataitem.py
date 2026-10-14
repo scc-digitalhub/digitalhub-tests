@@ -140,7 +140,7 @@ class TestDataitemCRUD:
         # Update description
         desc = "Updated description"
         di.metadata.description = desc
-        di.save(update=True)
+        di.update()
 
         # Verify update
         refreshed = dh.get_dataitem(di.key)

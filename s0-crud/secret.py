@@ -91,7 +91,7 @@ class TestSecretCRUD:
         # Update description
         desc = "Updated description"
         secret.metadata.description = desc
-        secret.save(update=True)
+        secret.update()
 
         # Verify update
         refreshed = dh.get_secret(secret.key)

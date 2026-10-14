@@ -126,7 +126,7 @@ class TestModelCRUD:
         # Update description
         desc = "Updated description"
         mdl.metadata.description = desc
-        mdl.save(update=True)
+        mdl.update()
 
         # Verify update
         refreshed = dh.get_model(mdl.key)

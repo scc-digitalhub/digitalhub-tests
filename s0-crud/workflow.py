@@ -127,7 +127,7 @@ class TestWorkflowCRUD:
         # Update description
         desc = "Updated description"
         wf.metadata.description = desc
-        wf.save(update=True)
+        wf.update()
 
         # Verify update
         refreshed = dh.get_workflow(wf.key)

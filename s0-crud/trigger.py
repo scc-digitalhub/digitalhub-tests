@@ -178,7 +178,7 @@ class TestTriggerCRUD:
         # Update description
         desc = "Updated description"
         trigger.metadata.description = desc
-        trigger.save(update=True)
+        trigger.update()
 
         # Verify update
         refreshed = dh.get_trigger(trigger.key)

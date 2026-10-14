@@ -126,13 +126,13 @@ class TestProjectCRUD:
 
         # Test save method
         p.metadata.description = "Another update"
-        p.save(update=True)
+        p.update()
         assert p.metadata.description == "Another update"
 
         # Test refresh method
         p2 = dh.get_project(p.name)
         p2.metadata.description = "Yet another update"
-        p2.save(update=True)
+        p2.update()
 
         p.refresh()
         assert p.metadata.description == "Yet another update"

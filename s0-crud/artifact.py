@@ -114,7 +114,7 @@ class TestArtifactCRUD:
         # Update description
         desc = "Updated description"
         art.metadata.description = desc
-        art.save(update=True)
+        art.update()
 
         # Verify update
         refreshed = dh.get_artifact(art.key)

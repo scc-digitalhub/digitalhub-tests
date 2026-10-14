@@ -135,7 +135,7 @@ class TestFunctionCRUD:
         # Update description
         desc = "Updated description"
         func.metadata.description = desc
-        func.save(update=True)
+        func.update()
 
         # Verify update
         refreshed = dh.get_function(func.key)
