@@ -40,7 +40,6 @@ def main() -> None:
         requirements=[
             "numpy<2",
             "scikit-learn<1.8",
-            "digitalhub-runtime-modelserve>=0.16.0b",
         ],
     )
     _ = project.new_function(
@@ -52,7 +51,6 @@ def main() -> None:
         requirements=[
             "numpy<2",
             "scikit-learn<1.8",
-            "digitalhub-runtime-modelserve>=0.16.0b",
         ],
     )
 

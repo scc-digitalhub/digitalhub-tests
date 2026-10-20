@@ -41,7 +41,6 @@ def main() -> None:
             "numpy<2",
             "mlflow<3",
             "scikit-learn <= 1.6.1",
-            "digitalhub-runtime-modelserve>=0.16.0b",
         ],
     )
 
@@ -88,7 +87,7 @@ def main() -> None:
     }
 
     model: ModelMlflow = train_fn.list_runs()[0].output("model")
-    serve_run: RunMlflowserveServeRun = serve_func.list_runs()[1]
+    serve_run: RunMlflowserveServeRun = serve_func.list_runs()[0]
     result = None
     try:
         result = serve_run.invoke(model_name=model.name, json=json_payload)
