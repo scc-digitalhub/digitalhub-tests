@@ -179,7 +179,7 @@ class TestLogCRUD:
                 self.project.register_huggingface,
                 dh.get_model_versions,
                 self.project.delete_model,
-                "hf:my-org/text-classifier",
+                "hf://myorg/textclassifier",
                 {},
             ),
             (
