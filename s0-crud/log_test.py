@@ -93,16 +93,14 @@ class TestLogCRUD:
             "labels": ["test", "model"],
         }
         dh.log_model(self.project.name, name=name, **common_model_kwargs)
-        dh.log_huggingface(self.project.name, name=name, **common_model_kwargs)
         dh.log_sklearn(self.project.name, name=name, **common_model_kwargs)
         dh.log_mlflow(self.project.name, name=name, **common_model_kwargs)
         dh.log_model(self.project.name, name=name, **common_model_kwargs)
         self.project.log_model(name=name, **common_model_kwargs)
-        self.project.log_huggingface(name=name, **common_model_kwargs)
         self.project.log_sklearn(name=name, **common_model_kwargs)
         self.project.log_mlflow(name=name, **common_model_kwargs)
         self.project.log_model(name=name, **common_model_kwargs)
-        assert len(dh.get_model_versions(name, project=self.project.name)) == 10
+        assert len(dh.get_model_versions(name, project=self.project.name)) == 8
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
         time.sleep(2)
 
@@ -181,7 +179,7 @@ class TestLogCRUD:
                 self.project.register_huggingface,
                 dh.get_model_versions,
                 self.project.delete_model,
-                self.path,
+                "hf:my-org/text-classifier",
                 {},
             ),
             (
