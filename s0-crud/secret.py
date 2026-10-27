@@ -32,7 +32,7 @@ class TestSecretCRUD:
             for secret in self.project.list_secrets():
                 if secret.name == i["name"]:
                     dh.delete_secret(secret.key)
-                    time.sleep(2)
+                    time.sleep(4)
 
     def test_create_delete(self):
         """Test creation and deletion via different methods."""
@@ -44,17 +44,17 @@ class TestSecretCRUD:
             assert s.name == i["name"]
             assert s.read_secret_value() == i["secret_value"]
             dh.delete_secret(s.key)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test module-level create + delete by name and id
             s = dh.new_secret(self.project.name, **i)
             dh.delete_secret(s.name, project=self.project.name, entity_id=s.id)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test project-level create + delete
             s = self.project.new_secret(**i)
             self.project.delete_secret(s.key)
-            time.sleep(2)
+            time.sleep(4)
 
         assert dh.list_secrets(self.project.name) == []
 
@@ -76,7 +76,7 @@ class TestSecretCRUD:
             assert o1.id == o3.id
 
             dh.delete_secret(o1.key)
-            time.sleep(2)
+            time.sleep(4)
 
     def test_update_refresh(self):
         """Test update and refresh operations."""
@@ -103,7 +103,7 @@ class TestSecretCRUD:
 
         # Cleanup
         dh.delete_secret(secret.key)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_import_export(self):
         """Test import/export functionality."""
@@ -121,7 +121,7 @@ class TestSecretCRUD:
         assert Path(export_path).exists()
 
         dh.delete_secret(secret.key)
-        time.sleep(2)
+        time.sleep(4)
 
         imported = dh.import_secret(file=export_path)
         assert isinstance(imported, Secret)
@@ -130,7 +130,7 @@ class TestSecretCRUD:
         assert imported.metadata.description == description
 
         dh.delete_secret(imported.key)
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -149,7 +149,7 @@ class TestSecretCRUD:
         assert updated.metadata.description == description
 
         self.project.delete_secret(secret.key)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_secret_value_operations(self):
         """Test secret value read/write operations."""
@@ -169,4 +169,4 @@ class TestSecretCRUD:
         assert value == new_value
 
         dh.delete_secret(secret.key)
-        time.sleep(2)
+        time.sleep(4)

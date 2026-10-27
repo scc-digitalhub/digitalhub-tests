@@ -41,7 +41,7 @@ class TestLogCRUD:
         for list_fn, delete_fn in cleanup_steps:
             if any(entity.name == name for entity in list_fn()):
                 delete_fn(name, delete_all_versions=True, cascade=False)
-                time.sleep(2)
+                time.sleep(4)
 
         # Log artifacts
         common_artifact_kwargs = {
@@ -55,7 +55,7 @@ class TestLogCRUD:
         self.project.log_artifact(name=name, **common_artifact_kwargs)
         assert len(dh.get_artifact_versions(name, project=self.project.name)) == 4
         self.project.delete_artifact(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
 
         # Log dataitems
         common_dataitem_kwargs = {
@@ -84,7 +84,7 @@ class TestLogCRUD:
         self.project.log_croissant(name, source=self.cr_path, **common_dataitem_kwargs)
         assert len(dh.get_dataitem_versions(name, project=self.project.name)) == 10
         self.project.delete_dataitem(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
 
         # Log models
         common_model_kwargs = {
@@ -102,7 +102,7 @@ class TestLogCRUD:
         self.project.log_model(name=name, **common_model_kwargs)
         assert len(dh.get_model_versions(name, project=self.project.name)) == 8
         self.project.delete_model(name, delete_all_versions=True, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_register_methods(self):
         """Test all register methods for different entities."""
@@ -115,7 +115,7 @@ class TestLogCRUD:
         for list_fn, delete_fn in cleanup_steps:
             if any(entity.name == name for entity in list_fn()):
                 delete_fn(name, delete_all_versions=True, cascade=False)
-                time.sleep(2)
+                time.sleep(4)
 
         register_methods = [
             (
@@ -212,7 +212,7 @@ class TestLogCRUD:
             project_register_fn(source=source, name=name, **kwargs)
             assert len(get_versions_fn(name, project=self.project.name)) == 2
             delete_fn(name, delete_all_versions=True, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
     def test_drop_existing(self):
         """Test overwrite functionality for log methods."""
@@ -265,4 +265,4 @@ class TestLogCRUD:
                 log_fn(source=self.path, name=name, drop_existing=True)
             assert len(get_versions_fn(name, project=self.project.name)) == 1
             delete_fn(name, delete_all_versions=True, cascade=False)
-            time.sleep(2)
+            time.sleep(4)

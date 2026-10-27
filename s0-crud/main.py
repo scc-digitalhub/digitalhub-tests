@@ -45,7 +45,7 @@ def main():
     logger.info("DIGITALHUB SDK - CRUD TESTS")
 
     dh.delete_project(PROJECT_NAME_TEST)
-    time.sleep(2)
+    time.sleep(4)
     p = dh.get_or_create_project(PROJECT_NAME_TEST)
     p.share("*")
 

@@ -48,19 +48,19 @@ class TestModelCRUD:
             assert d.name == i["name"]
             assert d.kind == i["kind"]
             dh.delete_model(d.key)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test module-level create + delete by name and id
             d = dh.new_model(self.project.name, **i)
             dh.delete_model(
                 d.name, project=self.project.name, entity_id=d.id, cascade=False
             )
-            time.sleep(2)
+            time.sleep(4)
 
             # Test project-level create + delete
             d = self.project.new_model(**i)
             self.project.delete_model(d.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
         assert dh.list_models(self.project.name) == []
 
@@ -85,7 +85,7 @@ class TestModelCRUD:
                 delete_all_versions=True,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
         assert len(dh.list_models(self.project.name)) == 0
 
@@ -109,7 +109,7 @@ class TestModelCRUD:
         l_obj = dh.list_models(self.project.name)
         for obj in l_obj:
             dh.delete_model(obj.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
         assert len(dh.list_models(self.project.name)) == 0
 
@@ -138,7 +138,7 @@ class TestModelCRUD:
 
         # Cleanup
         dh.delete_model(mdl.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -173,7 +173,7 @@ class TestModelCRUD:
             delete_all_versions=True,
             cascade=False,
         )
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_models(self.project.name)) == 0
 
     def test_import_export(self):
@@ -193,7 +193,7 @@ class TestModelCRUD:
         assert Path(export_path).exists()
 
         dh.delete_model(mdl.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_models(self.project.name)) == 0
 
         imported = dh.import_model(file=export_path)
@@ -203,7 +203,7 @@ class TestModelCRUD:
         assert imported.metadata.description == description
 
         dh.delete_model(imported.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -226,5 +226,5 @@ class TestModelCRUD:
         assert updated.metadata.description == description
 
         self.project.delete_model(mdl.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         assert len(self.project.list_models()) == 0

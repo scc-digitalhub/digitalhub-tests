@@ -25,7 +25,7 @@ class TestTaskCRUD:
     def _cleanup_tasks(self) -> None:
         for obj in self.project.list_tasks():
             dh.delete_task(obj.key)
-            time.sleep(2)
+            time.sleep(4)
 
     def _get_function(self) -> Function:
         return dh.new_function(
@@ -45,17 +45,17 @@ class TestTaskCRUD:
             assert isinstance(t, Task)
             assert t.kind == f"container+{action}"
             assert t.spec.function == f._get_executable_string()
-            time.sleep(2)
+            time.sleep(4)
             dh.delete_task(t.key)
-            time.sleep(2)
+            time.sleep(4)
 
             t = f.new_task(action=action)
-            time.sleep(2)
+            time.sleep(4)
             dh.delete_task(t.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
 
@@ -77,10 +77,10 @@ class TestTaskCRUD:
 
         for obj in l_obj:
             dh.delete_task(obj.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []
 
@@ -104,9 +104,9 @@ class TestTaskCRUD:
         l_obj = dh.list_tasks(self.project.name)
         for obj in l_obj:
             dh.delete_task(obj.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         self._cleanup_tasks()
         assert dh.list_tasks(self.project.name) == []

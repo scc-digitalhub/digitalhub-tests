@@ -55,7 +55,7 @@ class TestArtifactCRUD:
             assert d.name == i["name"]
             assert d.kind == i["kind"]
             dh.delete_artifact(d.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test module-level create + delete by name and id
             d = dh.new_artifact(self.project.name, **i)
@@ -65,7 +65,7 @@ class TestArtifactCRUD:
                 entity_id=d.id,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
             # Test project-level create + delete
             d = self.project.new_artifact(**i)
@@ -73,7 +73,7 @@ class TestArtifactCRUD:
                 d.key,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
         assert dh.list_artifacts(self.project.name) == []
 
@@ -97,7 +97,7 @@ class TestArtifactCRUD:
                 delete_all_versions=True,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
         assert len(dh.list_artifacts(self.project.name)) == 0
 
@@ -126,7 +126,7 @@ class TestArtifactCRUD:
 
         # Cleanup
         dh.delete_artifact(art.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -167,7 +167,7 @@ class TestArtifactCRUD:
             delete_all_versions=True,
             cascade=False,
         )
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_artifacts(self.project.name)) == 0
 
     def test_import_export(self):
@@ -189,7 +189,7 @@ class TestArtifactCRUD:
 
         # Delete original
         dh.delete_artifact(art.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_artifacts(self.project.name)) == 0
 
         # Import back
@@ -201,7 +201,7 @@ class TestArtifactCRUD:
 
         # Cleanup
         dh.delete_artifact(imported.key)
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -229,7 +229,7 @@ class TestArtifactCRUD:
 
         # Delete via project
         self.project.delete_artifact(art.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         assert len(self.project.list_artifacts()) == 0
 
     def test_get(self):
@@ -251,6 +251,6 @@ class TestArtifactCRUD:
         l_obj = dh.list_artifacts(self.project.name)
         for obj in l_obj:
             dh.delete_artifact(obj.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
         assert len(dh.list_artifacts(self.project.name)) == 0

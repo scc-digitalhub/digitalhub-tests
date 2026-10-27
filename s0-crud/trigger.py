@@ -49,7 +49,7 @@ class TestTriggerCRUD:
         for trigger in self.project.list_triggers():
             if trigger.name in names:
                 dh.delete_trigger(trigger.key)
-                time.sleep(2)
+                time.sleep(4)
 
     def _get_function(self) -> Function:
         return dh.new_function(
@@ -78,7 +78,7 @@ class TestTriggerCRUD:
             assert t.name == i["name"]
             assert t.kind == i["kind"]
             dh.delete_trigger(t.key)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test module-level create + delete by name and id
             t = dh.new_trigger(
@@ -88,15 +88,15 @@ class TestTriggerCRUD:
                 **i,
             )
             dh.delete_trigger(t.name, project=self.project.name, entity_id=t.id)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test function-level create + delete
             t = f.trigger(action="job", **i)
             dh.delete_trigger(t.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert dh.list_triggers(self.project.name) == []
 
     def test_list(self):
@@ -122,10 +122,10 @@ class TestTriggerCRUD:
 
         for obj in l_obj:
             dh.delete_trigger(obj.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_triggers(self.project.name)) == 0
 
     def test_get(self):
@@ -155,10 +155,10 @@ class TestTriggerCRUD:
         l_obj = dh.list_triggers(self.project.name)
         for obj in l_obj:
             dh.delete_trigger(obj.key)
-            time.sleep(2)
+            time.sleep(4)
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
         assert dh.list_triggers(self.project.name) == []
 
     def test_update_refresh(self):
@@ -190,9 +190,9 @@ class TestTriggerCRUD:
 
         # Cleanup
         dh.delete_trigger(trigger.key)
-        time.sleep(2)
+        time.sleep(4)
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_import_export(self):
         """Test import/export functionality."""
@@ -215,7 +215,7 @@ class TestTriggerCRUD:
         assert Path(export_path).exists()
 
         dh.delete_trigger(trigger.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_triggers(self.project.name)) == 0
 
         imported = dh.import_trigger(file=export_path)
@@ -225,8 +225,8 @@ class TestTriggerCRUD:
         assert imported.metadata.description == description
 
         dh.delete_trigger(imported.key)
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
 
         dh.delete_function(f.key)
-        time.sleep(2)
+        time.sleep(4)

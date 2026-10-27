@@ -58,17 +58,17 @@ class TestFunctionCRUD:
             assert f.name == i["name"]
             assert f.kind == i["kind"]
             dh.delete_function(f.key)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test module-level create + delete by name and id
             f = dh.new_function(self.project.name, **i)
             dh.delete_function(f.name, project=self.project.name, entity_id=f.id)
-            time.sleep(2)
+            time.sleep(4)
 
             # Test project-level create + delete
             f = self.project.new_function(**i)
             self.project.delete_function(f.key)
-            time.sleep(2)
+            time.sleep(4)
 
         assert dh.list_functions(self.project.name) == []
 
@@ -90,8 +90,8 @@ class TestFunctionCRUD:
             dh.delete_function(
                 obj.name, project=self.project.name, delete_all_versions=True
             )
-            time.sleep(2)
-        time.sleep(2)
+            time.sleep(4)
+        time.sleep(4)
 
         assert len(dh.list_functions(self.project.name)) == 0
 
@@ -114,11 +114,11 @@ class TestFunctionCRUD:
 
         l_obj = dh.list_functions(self.project.name)
 
-        time.sleep(2)
+        time.sleep(4)
         for obj in l_obj:
             dh.delete_function(obj.key)
-            time.sleep(2)
-        time.sleep(2)
+            time.sleep(4)
+        time.sleep(4)
 
         assert len(dh.list_functions(self.project.name)) == 0
 
@@ -147,7 +147,7 @@ class TestFunctionCRUD:
 
         # Cleanup
         dh.delete_function(func.key)
-        time.sleep(2)
+        time.sleep(4)
 
     def test_versions(self):
         """Test versioning functionality."""
@@ -185,7 +185,7 @@ class TestFunctionCRUD:
             project=self.project.name,
             delete_all_versions=True,
         )
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_functions(self.project.name)) == 0
 
     def test_import_export(self):
@@ -205,7 +205,7 @@ class TestFunctionCRUD:
         assert Path(export_path).exists()
 
         dh.delete_function(func.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_functions(self.project.name)) == 0
 
         imported = dh.import_function(file=export_path)
@@ -215,7 +215,7 @@ class TestFunctionCRUD:
         assert imported.metadata.description == description
 
         dh.delete_function(imported.key)
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
 
     def test_project_integration(self):
@@ -238,5 +238,5 @@ class TestFunctionCRUD:
         assert updated.metadata.description == description
 
         self.project.delete_function(func.key)
-        time.sleep(2)
+        time.sleep(4)
         assert len(self.project.list_functions()) == 0

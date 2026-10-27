@@ -52,7 +52,7 @@ class TestContainerimageCRUD:
             assert d.name == i["name"]
             assert d.kind == i["kind"]
             dh.delete_containerimage(d.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
             d = dh.new_containerimage(self.project.name, **i)
             dh.delete_containerimage(
@@ -61,7 +61,7 @@ class TestContainerimageCRUD:
                 entity_id=d.id,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
             d = self.project.new_containerimage(
                 name=i["name"],
@@ -69,7 +69,7 @@ class TestContainerimageCRUD:
                 image=i["image"],
             )
             self.project.delete_containerimage(d.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
         self._cleanup_containerimages()
         assert dh.list_containerimages(self.project.name) == []
@@ -96,7 +96,7 @@ class TestContainerimageCRUD:
                 delete_all_versions=True,
                 cascade=False,
             )
-            time.sleep(2)
+            time.sleep(4)
 
         self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
@@ -123,7 +123,7 @@ class TestContainerimageCRUD:
         l_obj = dh.list_containerimages(self.project.name)
         for obj in l_obj:
             dh.delete_containerimage(obj.key, cascade=False)
-            time.sleep(2)
+            time.sleep(4)
 
         self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
@@ -153,7 +153,7 @@ class TestContainerimageCRUD:
         assert ci.metadata.description == description
 
         dh.delete_containerimage(ci.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         self._cleanup_containerimages()
 
     def test_versions(self):
@@ -191,7 +191,7 @@ class TestContainerimageCRUD:
             delete_all_versions=True,
             cascade=False,
         )
-        time.sleep(2)
+        time.sleep(4)
         self._cleanup_containerimages()
         assert len(dh.list_containerimages(self.project.name)) == 0
 
@@ -213,7 +213,7 @@ class TestContainerimageCRUD:
         assert Path(export_path).exists()
 
         dh.delete_containerimage(ci.key, cascade=False)
-        time.sleep(2)
+        time.sleep(4)
         assert len(dh.list_containerimages(self.project.name)) == 0
 
         imported = dh.import_containerimage(file=export_path)
@@ -234,6 +234,6 @@ class TestContainerimageCRUD:
             delete_all_versions=True,
             cascade=False,
         )
-        time.sleep(2)
+        time.sleep(4)
         Path(export_path).unlink()
         self._cleanup_containerimages()
