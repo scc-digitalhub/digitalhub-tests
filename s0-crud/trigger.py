@@ -172,6 +172,7 @@ class TestTriggerCRUD:
             **TRIGGER_DICTS[0],
         )
 
+        trigger.refresh()
         # Update description
         desc = "Updated description"
         trigger.metadata.description = desc
