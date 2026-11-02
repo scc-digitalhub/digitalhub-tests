@@ -22,19 +22,16 @@ if typing.TYPE_CHECKING:
 TRIGGER_DICTS = [
     {
         "name": "test1",
-        "uuid": "d150bcca-bb64-451d-8455-dff862254b95",
         "kind": "scheduler",
         "schedule": "0 0 * * * ?",
     },
     {
         "name": "test2",
-        "uuid": "31acdd2d-0c41-428c-b68b-1b133da9e97b",
         "kind": "scheduler",
         "schedule": "0 12 * * * ?",
     },
     {
         "name": "test3",
-        "uuid": "b4a3dfdc-b917-44c4-9a29-613dcf734244",
         "kind": "lifecycle",
         "key": "store://test/artifacts/*",
         "states": ["READY"],
