@@ -145,6 +145,7 @@ class TestRunCRUD:
 
         run = task.run(**RUN_DICTS[0])
         time.sleep(4)
+        run.refresh()
 
         description = "Test update"
         run.metadata.description = description
